@@ -1,0 +1,21 @@
+{
+    "parserOptions": {
+        "sourceType": "module",
+        "ecmaVersion": 6,
+        "ecmaFeatures": {
+            "jsx": true,
+            "modules": true,
+            "experimentalObjectRestSpread": true
+        }
+    },
+    "rules": {
+        "require-jsdoc": "off",
+        "valid-jsdoc": "off",
+        "max-len": "off",
+        "arrow-parens": "off",
+        "new-cap": "off",
+        "no-unused-vars": "off",
+        "no-tabs": "off"
+    },
+    "extends": "google"
+}
