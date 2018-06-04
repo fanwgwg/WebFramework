@@ -23,9 +23,7 @@ function diff(virtualElement, container, oldDomElement, parentComponent) {
         // so that it can be retrieved it next time
         oldDomElement._virtualElement = virtualElement;
 
-        virtualElement.children.forEach((childElement, i) => {
-            diff(childElement, oldDomElement, oldDomElement.childNodes[i]);
-        });
+        diffList(virtualElement.children, oldDomElement);
     } else {
         // Insert virtual element to DOM if it is a new one
         mountElement(virtualElement, container, oldDomElement);
@@ -40,6 +38,91 @@ function getKey(virtualElement) {
     const component = virtualElement.component;
 
     return component ? component.props.key : virtualElement.props.key;
+}
+
+function diffList(virtualElements, parentDomElement) {
+    const keyedElements = {};
+    const unkeyedElements = [];
+
+    for (let i = 0; i < parentDomElement.childNodes.length; i += 1) {
+        const domElement = parentDomElement.childNodes[i];
+        const key = getKey(domElement._virtualElement);
+
+        if (key) {
+            keyedElements[key] = domElement;
+        } else {
+            unkeyedElements.push(domElement);
+        }
+    }
+
+    let unkeyedIndex = 0;
+    virtualElements.forEach((virtualElement, i) => {
+        const key = virtualElement.props.key;
+        if (key) {
+            const keyedDomElement = keyedElements[key];
+            if (keyedDomElement) {
+                // move to correct location
+                if (
+                    parentDomElement.childNodes[i] &&
+                    !parentDomElement.childNodes[i].isSameNode(keyedDomElement)
+                ) {
+                    if (parentDomElement.childNodes[i]) {
+                        parentDomElement.insertBefore(
+                            keyedDomElement,
+                            parentDomElement.childNodes[i]
+                        );
+                    } else {
+                        parentDomElement.append(keyedDomElement);
+                    }
+                }
+
+                diff(virtualElement, parentDomElement, keyedDomElement);
+            } else {
+                const placeholder = document.createElement('span');
+                if (parentDomElement.childNodes[i]) {
+                    parentDomElement.insertBefore(placeholder, parentDomElement.childNodes[i]);
+                } else {
+                    parentDomElement.append(placeholder);
+                }
+                mountElement(virtualElement, parentDomElement, placeholder);
+            }
+        } else {
+            const unkeyedDomElement = unkeyedElements[unkeyedIndex];
+            if (unkeyedElements) {
+                if (
+                    parentDomElement.childNodes[i] &&
+                    !parentDomElement.childNodes[i].isSameNode(unkeyedDomElement)
+                ) {
+                    if (parentDomElement.childNodes[i]) {
+                        parentDomElement.insertBefore(
+                            unkeyedDomElement,
+                            parentDomElement.childNodes[i]
+                        );
+                    } else {
+                        parentDomElement.append(unkeyedDomElement);
+                    }
+                }
+
+                diff(virtualElement, parentDomElement, unkeyedDomElement);
+            } else {
+                const placeholder = document.createElement('span');
+                if (parentDomElement.childNodes[i]) {
+                    parentDomElement.insertBefore(placeholder, parentDomElement.childNodes[i]);
+                } else {
+                    parentDomElement.append(placeholder);
+                }
+                mountElement(virtualElement, parentDomElement, placeholder);
+            }
+            unkeyedIndex += 1;
+        }
+    });
+
+
+    // remove extra children
+    const oldChildren = parentDomElement.childNodes;
+    while (oldChildren.length > virtualElements.length) {
+        unmountNode(oldChildren[virtualElements.length]);
+    }
 }
 
 function diffComponent(newVirtualElement, oldComponent, container, domElement, parentComponent) {

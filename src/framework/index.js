@@ -2,7 +2,7 @@ import {createElement, Component} from './framework';
 import {Link} from './Link';
 import {Route} from './Route';
 import {render} from './frameworkDOM';
-import {createStore} from './store';
+import {createStore, connect} from './redux';
 
 export {
   createElement,
@@ -11,4 +11,5 @@ export {
   Route,
   Link,
   createStore,
+  connect,
 };

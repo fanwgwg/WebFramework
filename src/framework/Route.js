@@ -62,10 +62,10 @@ export class Route extends Component {
   render() {
     console.log('render route ' + this.props.path);
     console.log('current pathname ' + location.pathname);
-    const {path, exact, render} = this.props;
+    const {path, exact, render, enabled} = this.props;
     const match = matchPath(location.pathname, {path, exact});
 
-    if (!match) {
+    if (!enabled || !match) {
       return <div class="route"/>;
     }
 
