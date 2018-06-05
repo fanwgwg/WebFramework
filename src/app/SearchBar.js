@@ -1,5 +1,8 @@
 import {Component, createElement} from '../framework';
 import {timeRanges, tags} from './Constants';
+import * as searchIcon from './assets/search.png';
+import * as rightArrow from './assets/right-arrow.png';
+import * as leftArrow from './assets/left-arrow.png';
 
 export default class SearchBar extends Component {
     constructor() {
@@ -51,11 +54,12 @@ export default class SearchBar extends Component {
         const timeSelections = Object.keys(timeRanges).map(t => {
             let isSelected = this.state.time.includes(timeRanges[t]);
             let style = isSelected ?
-                'background: #E5F7A9; box-shadow: 2px 2px 5px #bcbcbc4d'
+                'background: #E5F7A9; box-shadow: 2px 2px 5px #414141; color: #453257'
                 : 'background: transparent; box-shadow: none';
+            let className = timeRanges[t] == 'Later'? 'arrowed' : '';
 
             return (
-                <div>
+                <div class={className}>
                     <button style={style} onclick={() => this.onTimeSelected(timeRanges[t])}>
                         {timeRanges[t].toUpperCase()}
                     </button>
@@ -66,12 +70,12 @@ export default class SearchBar extends Component {
         const tagSelections = tags.map((t, index) => {
             let isSelected = this.state.tags.includes(index);
             let style = isSelected ?
-                'background: #E5F7A9; box-shadow: 2px 2px 5px #bcbcbc4d; border: 1px solid transparent; color: #453257'
-                : 'background: transparent; box-shadow: none; border: 1px solid #453257; color: #453257; font-weight: normal';
+                'background: #E5F7A9; box-shadow: 2px 2px 5px #414141; border: 1px solid transparent; color: #453257'
+                : 'background: transparent; box-shadow: none; border: 1px solid white; color: white; font-weight: normal';
 
             return (
                 <div>
-                    <button style={style} onclick={() => this.onTagSelected(index)}>
+                    <button class='button-with-border' style={style} onclick={() => this.onTagSelected(index)}>
                         {tags[index]}
                     </button>
                 </div>
@@ -83,13 +87,20 @@ export default class SearchBar extends Component {
                 <div class='section'>
                     <div class='title'><u>TIME</u></div>
                     <div class='content'>{timeSelections}</div>
+                    <div class='time-input-container'>
+                        <img src={rightArrow} alt='from' />
+                        <input />
+                        <img src={leftArrow} alt='to' />
+                        <input />
+                    </div>
                 </div>
                 <div class='section'>
                     <div class='title'><u>TAG</u></div>
                     <div class='content'>{tagSelections}</div>
                 </div>
                 <button class='search-button'>
-                Search
+                    <img src={searchIcon} />
+                    Search
                 </button>
             </div>
         );
