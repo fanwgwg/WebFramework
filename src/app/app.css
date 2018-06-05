@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
-
-html, body, #root {
+html,
+body,
+#root {
     height: 100%;
     margin: 0;
 }
@@ -12,11 +13,20 @@ button {
     outline: none;
 }
 
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 .app {
     font-family: 'Source Sans Pro', sans-serif;
     width: 100%;
     margin: 0;
-    font-size: 36px;
+    font-size: 14px;
     color: #8560A9;
 }
 
@@ -31,7 +41,7 @@ button {
 
 .sign-in-top {
     height: 50%;
-    background-image: url('./assets/sign-in-background.png');
+    background-image: url(/02bb50d1744423d50b6bbe361831cf54.png);
     background-size: cover;
 }
 
@@ -122,28 +132,38 @@ button {
     height: 100%;
     transition: 0.3s;
     -webkit-transition: 0.3s;
+    overflow-y: hidden;
 }
 
 .events-page .top-menu {
-    height: 8%;
+    height: 50px;
     background: #FFD424;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 44px;
+    font-size: 16px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
 }
 
 .events-page .top-menu img {
     object-fit: contain;
-    padding: 0 36px;
+    padding: 0 16px;
+    width: 30px;
 }
 
 .events-page .events-container {
-    padding: 28px;
+    padding: 16px;
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 50px;
 }
 
 .event-card {
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 
 .event-card .top {
@@ -164,14 +184,15 @@ button {
 .event-card .user img {
     border-radius: 50%;
     object-fit: contain;
-    width: 70px;
-    margin-right: 20px;
+    width: 32px;
+    margin-right: 10px;
 }
 
 .event-card .tag {
-    padding: 8px 25px;
+    padding: 4px 10px;
     border-radius: 30px;
-    border: 2px solid #AC8EC9;
+    font-size: 12px;
+    border: 1px solid #AC8EC9;
 }
 
 .event-card .middle {
@@ -185,30 +206,98 @@ button {
 
 .event-card .middle img {
     object-fit: contain;
-    max-height: 120px;
-    border-radius: 10px;
+    max-height: 60px;
+    border-radius: 6px;
+    margin-bottom: -20px;
 }
 
 .event-card .title {
     font-weight: bold;
-    margin-top: 20px;
-    font-size: 40px;
+    margin-top: 10px;
+    font-size: 16px;
     color: #453257;
 }
 
 .event-card .time {
     color: #8560A9;
     display: flex;
-    margin-top: 20px;
+    margin-top: 10px;
+    font-size: 12px;
 }
 
 .event-card .time img {
     object-fit: contain;
-    margin-right: 20px;
-    width: 36px;
+    margin-right: 8px;
+    width: 15px;
+    height: 15px;
 }
 
 .event-card p {
     color: rgb(8, 8, 8);
     margin-top: 20px;
+    font-size: 14px;
+}
+
+.event-card .bottom {
+    display: flex;
+    align-items: center;
+}
+
+.event-card .bottom .option img {
+    width: 12px;
+    object-fit: contain;
+    margin-right: 8px;
+}
+
+.event-card .bottom .option {
+    margin-right: 16px;
+    align-items: center;
+}
+
+.event-card .divider {
+    height: 2px;
+    margin-top: 20px;
+    background: #E8E8E8;
+}
+
+.searchbar {
+    padding: 20px;
+}
+
+.searchbar .section {
+    margin-bottom: 36px;
+    text-align: center;
+}
+
+.searchbar .section .title u {
+    font-size: 18px;
+    color: #AC8EC9;
+    text-decoration: none;
+    border-bottom: 1px solid #8560A9;
+}
+
+.searchbar .section .content {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 30px;
+}
+
+.searchbar .section .content button {
+    color: #453257;
+    font-size: 14px;
+    padding: 4px 10px;
+    margin: 5px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.searchbar .search-button {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: #D5EF7F;
+    font-size: 20px;
 }

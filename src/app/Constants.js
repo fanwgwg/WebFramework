@@ -9,7 +9,18 @@ import * as user4 from './assets/user-4.jpeg';
 import * as user5 from './assets/user-5.jpeg';
 import * as user6 from './assets/user-6.jpeg';
 
-const events = [
+export const timeRanges = {
+    ANYTIME: 'Anytime',
+    TODAY: 'Today',
+    TOMORROW: 'Tomorrow',
+    THIS_WEEK: 'This week',
+    THIS_MONTH: 'This month',
+    LATER: 'Later',
+};
+
+export const tags = ['All', 'Exhibition', 'Entertainment', 'Musical', 'Sale', 'Sport', 'Dance'];
+
+export const events = [
     {
         id: 1,
         user: {
@@ -17,7 +28,7 @@ const events = [
             picture: user1,
         },
         title: 'The Little Prince: A Story',
-        tag: 'Exihibition',
+        tagId: 1,
         startTime: '2018-06-01',
         endTime: '2018-06-30',
         content: 'Find out more about the author, Antoine de Saint-Exupéry, through his photos, personal belongings, manuscripts, illustrations and other philatelic materials. Relive, through these artefacts, his experiences that shaped his magnum opus, The Little Prince.',
@@ -30,7 +41,7 @@ const events = [
             picture: user2,
         },
         title: 'Jurassic World @ Universal Studios Singapore™',
-        tag: 'Entertainment',
+        tagId: 2,
         startTime: '2018-06-01',
         endTime: '2018-08-22',
         content: 'This epic event will see dinosaurs take over Universal Studios Singapore™ from June to August. Walk among these extinct giants, now risen back to life, and enjoy many selfie opportunities with them. Enjoy high-octane shows and see what it might have been like by plunging yourself into a lifelike augmented reality simulation.',
@@ -42,7 +53,7 @@ const events = [
             picture: user3,
         },
         title: 'The Great Singapore Sale',
-        tag: 'Sale',
+        tagId: 4,
         startTime: '2018-06-08',
         endTime: '2018-08-12',
         content: 'Every summer, shopping-obsessed Singapore invites one and all to partake in irresistible sales. If you happen to be in town during this period, you’re in luck! You’ll be treated to big discounts on a myriad of shopping and even unique experiences at amusement parks and restaurants.',
@@ -55,7 +66,7 @@ const events = [
             picture: user4,
         },
         title: 'RWS Football Fever',
-        tag: 'Sport',
+        tagId: 5,
         startTime: '2018-06-14',
         endTime: '2018-07-15',
         content: 'The best ‘live’ football screening experience of the year invites you to cheer on your favourite squads, while enjoying live performances, themed activities with attractive prizes, great food and drinks, and more. Don’t miss this chance to truly get into the game, through an immersive football experience like no other!',
@@ -67,7 +78,7 @@ const events = [
             picture: user5,
         },
         title: 'M1 CONTACT Contemporary Dance Festival',
-        tag: 'Dance',
+        tagId: 6,
         startTime: '2018-06-15',
         endTime: '2018-08-04',
         content: 'Led by experienced Festival Director, Kuik Swee Boon, this unique dance festival not only lets you admire bold choreography and powerful works, but also aims to pique the curiosity of its attendees with dance workshops and technique classes.',
@@ -80,12 +91,10 @@ const events = [
             picture: user6,
         },
         title: 'THE LION KING',
-        tag: 'Musical',
+        tagId: 3,
         startTime: '2018-06-27',
         endTime: '2018-07-12',
         content: 'One of today’s most celebrated theatrical productions, THE LION KING retells Simba’s coming of age story with the help of award-wining actors and dancers, as well as breath-taking costumes and sets. Sing along to THE LION KING’s catchy tunes, composed by Sir Elton John and Tim Rice, and soak in what many critics have called “an unforgettable experience”.',
         image: event6,
     },
 ];
-
-export default events;
