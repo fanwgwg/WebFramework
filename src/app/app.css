@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
-
 html,
 body,
 #root {
@@ -152,7 +151,7 @@ input:focus {
     justify-content: space-between;
     align-items: center;
     font-size: 16px;
-    position: fixed;
+    position: absolute;
     width: 100%;
     top: 0;
     z-index: 100;
@@ -164,12 +163,55 @@ input:focus {
     width: 30px;
 }
 
+.events-page .search-popup {
+    margin-top: 50px;
+    padding: 10px 16px;
+    height: 60px;
+    background: #F2F2F2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.events-page .search-popup .result {
+    display: flex;
+    font-size: 16px;
+    justify-content: space-between;
+}
+
+.events-page .search-popup .tag {
+    border: 1px solid #bdbdbd;
+    border-radius: 5px;
+    padding: 0px 5px;
+    margin: 0 2px;
+    background: #bdbdbd;
+    color: white;
+    font-size: 11px;
+}
+
+.events-page .search-popup button {
+    background: #D5EF7F;
+    color: #67616D;
+    border-radius: 5px;
+    font-size: 11px;
+    padding: 4px 10px;
+    box-shadow: 1px 1px 2px #e0e0e0;
+}
+
+.events-page .search-popup .description {
+    color: #9f9f9f;
+    font-size: 12px;
+    padding-top: 5px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .events-page .events-container {
     padding: 16px;
-    height: 100%;
+    bottom: 0;
+    position: absolute;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    margin-top: 50px;
 }
 
 .event-card {
@@ -310,7 +352,7 @@ input:focus {
     position: absolute;
     top: 34px;
     left: 25px;
-    border-style: solid; 
+    border-style: solid;
     border-width: 0px 8px 12px;
     border-color: white transparent;
     display: block;
@@ -334,6 +376,7 @@ input:focus {
     font-weight: 600;
     display: flex;
     justify-content: center;
+    transition: 0.2s;
 }
 
 .searchbar .search-button img {

@@ -57,8 +57,8 @@ function diffList(virtualElements, parentDomElement) {
 
     let unkeyedIndex = 0;
     virtualElements.forEach((virtualElement, i) => {
-        const key = virtualElement.props.key;
-        if (key) {
+        if (virtualElement.props && virtualElement.props.key) {
+            const key = virtualElement.props.key;
             const keyedDomElement = keyedElements[key];
             if (keyedDomElement) {
                 // move to correct location

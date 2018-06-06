@@ -1,21 +1,33 @@
-import {Component, createElement} from '../framework';
+import {Component, createElement, connect} from '../framework';
 import {timeRanges, tags} from './Constants';
+import * as Actions from './action';
+import * as Utils from './utils';
 import * as searchIcon from './assets/search.png';
 import * as rightArrow from './assets/right-arrow.png';
 import * as leftArrow from './assets/left-arrow.png';
 
-export default class SearchBar extends Component {
-    constructor() {
-        super();
+class SearchBar extends Component {
+    constructor(props) {
+        super(props);
         this.state = ({
-            time: [timeRanges.ANYTIME],
-            tags: [0],
-            fromTime: null,
-            toTime: null,
+            time: this.props.time,
+            tagIds: this.props.tagIds,
+            fromTime: this.props.fromTime,
+            toTime: this.props.toTime,
             isTyping: -1,
         });
 
         this.onTimeInputChanged = this.onTimeInputChanged.bind(this);
+    }
+
+    componentDidMount() {
+        if (this.props.fromTime && this.fromTimeInput) {
+            this.fromTimeInput.value = Utils.getFormattedDate(this.props.fromTime);
+        }
+
+        if (this.props.toTime && this.toTimeInput) {
+            this.toTimeInput.value = Utils.getFormattedDate(this.props.toTime);
+        }
     }
 
     onTimeSelected(time) {
@@ -25,26 +37,28 @@ export default class SearchBar extends Component {
     }
 
     onTagSelected(tag) {
+        console.log(`tag is ${tag}`);
         if (tag == 0) {
             this.setState({
-                tags: [0],
+                tagIds: [0],
             });
 
             return;
         }
 
-        if (this.state.tags.includes(0)) {
+        if (this.state.tagIds.includes(0)) {
             this.setState({
-                tags: [tag],
+                tagIds: [tag],
             });
 
             return;
         }
 
-        let selected = this.state.tags;
+        let selected = this.state.tagIds;
         let index = selected.indexOf(tag);
 
         if (index < 0) {
+            console.log(`push ${tag}`);
             selected.push(tag);
         } else {
             selected.splice(index, 1);
@@ -55,12 +69,12 @@ export default class SearchBar extends Component {
         }
 
         this.setState({
-            tags: selected,
+            tagIds: selected,
         });
     }
 
     onTimeInputChanged(value, index) {
-        if (this.isValidDate(value)) {
+        if (Utils.isValidDate(value)) {
             if (index == 0) {
                 this.setState({
                     isTyping: 0,
@@ -91,50 +105,50 @@ export default class SearchBar extends Component {
         });
     }
 
-    isValidDate(dateString) {
-        let regexDate = /^\d{4}\-\d{1,2}\-\d{1,2}$/;
-
-        if (!regexDate.test(dateString)) {
-            return false;
+    onSearchClicked() {
+        if (this.shouldEnableSearch()) {
+            return;
         }
 
-        let parts = dateString.split('-');
-        let day = parseInt(parts[2], 10);
-        let month = parseInt(parts[1], 10);
-        let year = parseInt(parts[0], 10);
-
-        if (year < 1000 || year > 3000 || month == 0 || month > 12) {
-            return false;
+        if (this.state.time.description !== timeRanges.LATER.description) {
+            this.props.updateSearchFilter(this.state.time, this.state.tagIds);
+        } else if (this.state.fromTime && this.state.toTime) {
+            this.props.updateSearchFilter({
+                description: this.state.time.description,
+                fromTime: this.state.fromTime,
+                toTime: this.state.toTime,
+            }, this.state.tagIds);
         }
 
-        let monthLength = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        this.props.onSearchStarted();
+    }
 
-        if (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0)) {
-            monthLength[1] = 29;
-        }
-
-        return day > 0 && day <= monthLength[month - 1];
+    shouldEnableSearch() {
+        const {time, tagIds, fromTime, toTime, isTyping} = this.state;
+        return time.description == timeRanges.LATER.description && (!fromTime || !toTime || fromTime > toTime);
     }
 
     render() {
+        const {time, tagIds, fromTime, toTime, isTyping} = this.state;
         const timeSelections = Object.keys(timeRanges).map(t => {
-            let isSelected = this.state.time == timeRanges[t];
+            let isSelected = time.description == timeRanges[t].description;
             let style = isSelected ?
                 'background: #E5F7A9; box-shadow: 2px 2px 5px #414141; color: #453257'
                 : 'background: transparent; box-shadow: none';
-            let className = (timeRanges[t] == timeRanges.LATER && this.state.time == timeRanges.LATER) ? 'arrowed' : '';
+            let className = (timeRanges[t].description == timeRanges.LATER.description
+                && time.description == timeRanges.LATER.description) ? 'arrowed' : '';
 
             return (
                 <div class={className}>
                     <button style={style} onclick={() => this.onTimeSelected(timeRanges[t])}>
-                        {timeRanges[t].toUpperCase()}
+                        {timeRanges[t].description.toUpperCase()}
                     </button>
                 </div>
             );
         });
 
         const tagSelections = tags.map((t, index) => {
-            let isSelected = this.state.tags.includes(index);
+            let isSelected = tagIds.includes(index);
             let style = isSelected ?
                 'background: #E5F7A9; box-shadow: 2px 2px 5px #414141; border: 1px solid transparent; color: #453257'
                 : 'background: transparent; box-shadow: none; border: 1px solid white; color: white; font-weight: normal';
@@ -148,30 +162,40 @@ export default class SearchBar extends Component {
             );
         });
 
-        let message = `Please type in format of ${new Date().toISOString().slice(0, 10)}`;
-        if ((this.state.isTyping == 0 && !this.state.fromTime)
-            || (this.state.isTyping == 1 && !this.state.toTime)) {
+        let message = `Please type in format of ${Utils.getFormattedDate(new Date())}`;
+        if ((isTyping == 0 && !fromTime)
+            || (isTyping == 1 && !toTime)) {
             message = 'Time format incorrect, the correct format should be YYYY-MM-DD';
-        } else if ((this.state.isTyping == 0 && this.state.fromTime
-            || this.state.isTyping == 1 && this.state.toTime)
-            && this.state.fromTime > this.state.toTime) {
+        } else if (isTyping == 0 && fromTime
+            && isTyping == 1 && toTime
+            && fromTime > toTime) {
             message = 'The from time should be earlier than to time.';
-        } else if ((this.state.isTyping == 0 && this.state.fromTime)
-            || (this.state.isTyping == 1 && this.state.toTime)) {
+        } else if ((isTyping == 0 && fromTime)
+            || (isTyping == 1 && toTime)) {
             message = 'Format correct!';
         }
 
-        const timeInput = this.state.time == timeRanges.LATER ? (
+        const timeInput = time.description == timeRanges.LATER.description ? (
             <div class='time-input-container'>
                 <div class='main'>
                     <img src={rightArrow} alt='from' />
-                    <input onkeyup={(e) => this.onTimeInputChanged(e.target.value.trim(), 0)} onfocusout={this.onInputFocusOut.bind(this)} />
+                    <input
+                        ref={fromTimeInput => this.fromTimeInput = fromTimeInput}
+                        onkeyup={e => this.onTimeInputChanged(e.target.value.trim(), 0)}
+                        onfocusout={this.onInputFocusOut.bind(this)}
+                    />
                     <img src={leftArrow} alt='to' />
-                    <input onkeyup={(e) => this.onTimeInputChanged(e.target.value.trim(), 1)} onfocusout={this.onInputFocusOut.bind(this)} />
+                    <input
+                        ref={toTimeInput => this.toTimeInput = toTimeInput}
+                        onkeyup={(e) => this.onTimeInputChanged(e.target.value.trim(), 1)}
+                        onfocusout={this.onInputFocusOut.bind(this)}
+                    />
                 </div>
                 <div class='message'>{message}</div>
             </div>
         ) : null;
+
+        let searchButtonStyle = this.shouldEnableSearch() ? 'background: gray; cursor: default; opacity: 0.7' : null;
 
         return (
             <div class='searchbar'>
@@ -184,7 +208,7 @@ export default class SearchBar extends Component {
                     <div class='title'><u>TAG</u></div>
                     <div class='content'>{tagSelections}</div>
                 </div>
-                <button class='search-button'>
+                <button class='search-button' style={searchButtonStyle} onclick={this.onSearchClicked.bind(this)}>
                     <img src={searchIcon} />
                     Search
                 </button>
@@ -192,3 +216,24 @@ export default class SearchBar extends Component {
         );
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        updateSearchFilter: (searchTimeFilter, searchTagFilter) => dispatch({
+            type: Actions.UPDATE_SEARCH_FILTER,
+            searchTimeFilter,
+            searchTagFilter,
+        }),
+    };
+};
+
+const mapStateToProps = state => {
+    return {
+        time: state.searchTimeFilter ? state.searchTimeFilter : null,
+        fromTime: state.searchTimeFilter ? state.searchTimeFilter.fromTime : null,
+        toTime: state.searchTimeFilter ? state.searchTimeFilter.toTime : null,
+        tagIds: state.searchTagFilter,
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

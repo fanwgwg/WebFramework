@@ -1,7 +1,10 @@
 import * as Actions from './action';
+import {timeRanges} from './Constants';
 
 const initialState = {
     isAuthenticated: false,
+    searchTimeFilter: timeRanges.ANYTIME,
+    searchTagFilter: [0],
 };
 
 const reducer = (state = initialState, action) => {
@@ -12,8 +15,20 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 isAuthenticated: true,
             };
+        case Actions.UPDATE_SEARCH_FILTER:
+            return {
+                ...state,
+                searchTimeFilter: action.searchTimeFilter,
+                searchTagFilter: action.searchTagFilter,
+            };
+        case Actions.CLEAR_FILTER:
+            return {
+                ...state,
+                searchTimeFilter: timeRanges.ANYTIME,
+                searchTagFilter: [0],
+            };
         default:
-            break;
+            return initialState;
     }
 };
 

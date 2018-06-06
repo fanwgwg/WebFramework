@@ -1,15 +1,17 @@
-import {Component, createElement} from '../framework';
+import {Component, createElement, connect} from '../framework';
 import EventCard from './EventCard';
 import SearchBar from './SearchBar';
 import * as searchIcon from './assets/search.png';
 import * as profileIcon from './assets/profile.png';
-import {events} from './Constants';
+import {events, timeRanges, tags} from './Constants';
+import * as Utils from './utils';
+import * as Actions from './action';
 
-export default class EventsPage extends Component {
-    constructor() {
-        super();
+class EventsPage extends Component {
+    constructor(props) {
+        super(props);
         this.state = {
-            inSearch: true,
+            inSearch: false,
         };
     }
 
@@ -19,20 +21,75 @@ export default class EventsPage extends Component {
         });
     }
 
+    onSearchStarted() {
+        this.setState({
+            inSearch: false,
+        });
+    }
+
+    onClearSearch() {
+        console.log('clear search');
+        this.props.clearSearchFilter();
+    }
+
+    getFilteredEvents() {
+        const {time, fromTime, toTime, tagIds} = this.props;
+
+        let filteredEvents = events.filter(e => {
+            if (time.description == timeRanges.ANYTIME.description) {
+                return true;
+            }
+
+            let filterFrom = fromTime ? fromTime : time.fromTime;
+            let filterTo = toTime ? toTime : time.toTime;
+            let eventFrom = new Date(e.startTime);
+            let eventTo = new Date(e.endTime);
+
+            return Utils.hasOverlap(filterFrom, filterTo, eventFrom, eventTo);
+        }).filter(e => tagIds.includes(0) || tagIds.includes(e.tagId));
+
+        return filteredEvents;
+    }
+
     render() {
-        const eventCards = events.map(event => <EventCard event={event} />);
+        const {time, fromTime, toTime, tagIds} = this.props;
+        const filteredEvents = this.getFilteredEvents();
+
+        let tagMessage;
+        let timeMessage = time.description;
+        if (time.description == timeRanges.LATER.description) {
+            timeMessage = `from ${Utils.getFormattedDate(fromTime)} to ${Utils.getFormattedDate(toTime)}`;
+        }
+        if (tagIds.length > 0) {
+            tagMessage = tagIds.map(t => <span class='tag'>{tags[t]}</span>);
+        }
+
+        const searchPopup = fromTime || toTime || !tagIds.includes(0) ? (
+            <div class='search-popup' key={2}>
+                <div class='result' key={0}>
+                    {filteredEvents.length} Results
+                    <button onclick={this.onClearSearch.bind(this)}>Clear Filter</button>
+                </div>
+                <div class='description' key={1}>
+                    Filtered for {tagMessage} {timeMessage.toLowerCase()}
+                </div>
+            </div>
+        ) : null;
+
+        const eventCards = filteredEvents.map((event, index) => <EventCard event={event} key={index} />);
         return (
             <div class='page events-page' style={this.state.inSearch ? 'transform: translate3d(75%, 0, 0)' : ''}>
-                <div class='sidebar' >
-                    <SearchBar />
+                <div class='sidebar' key={0}>
+                    {this.state.inSearch ? <SearchBar onSearchStarted={this.onSearchStarted.bind(this)} /> : null}
                 </div>
-                <div class='main' >
-                    <div class='top-menu'>
+                <div class='main' key={1}>
+                    <div class='top-menu' key={0}>
                         <img src={searchIcon} alt='Search' style='width: 24px' onclick={this.onSearchIconClicked.bind(this)} />
                         <span>BlackCat</span>
                         <img src={profileIcon} alt='Profile' />
                     </div>
-                    <div class='events-container'>
+                    {searchPopup}
+                    <div class='events-container' key={1} style={searchPopup ? 'top: 130px' : 'top: 50px'}>
                         {eventCards}
                     </div>
                 </div>
@@ -40,3 +97,21 @@ export default class EventsPage extends Component {
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        eventspage: true,
+        time: state.searchTimeFilter ? state.searchTimeFilter : null,
+        fromTime: state.searchTimeFilter ? state.searchTimeFilter.fromTime : null,
+        toTime: state.searchTimeFilter ? state.searchTimeFilter.toTime : null,
+        tagIds: state.searchTagFilter ? state.searchTagFilter : [0],
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        clearSearchFilter: () => dispatch({type: Actions.CLEAR_FILTER}),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EventsPage);

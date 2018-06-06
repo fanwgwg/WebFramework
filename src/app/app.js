@@ -21,6 +21,15 @@ class App extends Component {
 
     render() {
         console.log(`render App with state ${this.state.isAuthenticated}`);
+        console.log(this.props.store === this.state.isAuthenticated);
+        if (this.props.store == undefined) {
+            return (
+                <div class='app'>
+                Loading
+                </div>
+            );
+        }
+
         return (
             <div class='app'>
                 <Route key={0} exact path='/' enabled render={() => <SignInPage />} />
@@ -31,4 +40,4 @@ class App extends Component {
     }
 }
 
-render(<App store={store}/>, document.getElementById('root'));
+render(<App store={store} />, document.getElementById('root'));
