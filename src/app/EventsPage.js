@@ -54,7 +54,7 @@ class EventsPage extends Component {
     }
 
     render() {
-        const {time, fromTime, toTime, tagIds} = this.props;
+        const {time, fromTime, toTime, tagIds, match} = this.props;
         const {inSearch} = this.state;
         const filteredEvents = this.getFilteredEvents();
 
@@ -80,6 +80,7 @@ class EventsPage extends Component {
         ) : null;
 
         const eventCards = filteredEvents.map((event, index) => <EventCard event={event} key={index} />);
+
         return (
             <div class='page events-page' style={this.state.inSearch ? '-webkit-transform: translate3d(75%, 0, 0)' : ''}>
                 <div class='sidebar' key={0}>

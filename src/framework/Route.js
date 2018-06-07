@@ -1,5 +1,6 @@
 import {Component, createElement} from './framework';
 import {register, unregister} from './routeInstance';
+import pathToRegexp from 'path-to-regexp';
 
 const matchPath = (pathname, options) => {
   const {exact = false, path} = options;
@@ -12,7 +13,9 @@ const matchPath = (pathname, options) => {
     };
   }
 
-  const match = new RegExp(`^${path}`).exec(pathname);
+  let keys = [];
+  let re = pathToRegexp(path, keys);
+  let match = re.exec(pathname);
 
   if (!match) {
     return null;
@@ -25,7 +28,7 @@ const matchPath = (pathname, options) => {
     return null;
   }
 
-  return {path, url, isExact};
+  return {path, url, isExact, params: match.slice(1)};
 };
 
 export class Route extends Component {
@@ -66,13 +69,13 @@ export class Route extends Component {
     const match = matchPath(location.pathname, {path, exact});
 
     if (!enabled || !match) {
-      return <div class="route"/>;
+      return <div class="route" />;
     }
 
     if (render) {
       return <div class="route">{render({match})}</div>;
     }
 
-    return <div class="route"/>;
+    return <div class="route" />;
   }
 }

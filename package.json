@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "mapbox-gl": "^0.45.0"
+    "mapbox-gl": "^0.45.0",
+    "path-to-regexp": "^2.2.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
