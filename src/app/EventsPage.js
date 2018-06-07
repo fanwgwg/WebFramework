@@ -16,12 +16,14 @@ class EventsPage extends Component {
     }
 
     onSearchIconClicked() {
+        Utils.disableScroll();
         this.setState({
-            inSearch: !this.state.inSearch,
+            inSearch: true,
         });
     }
 
     onSearchStarted() {
+        Utils.enableScroll();
         this.setState({
             inSearch: false,
         });
@@ -53,6 +55,7 @@ class EventsPage extends Component {
 
     render() {
         const {time, fromTime, toTime, tagIds} = this.props;
+        const {inSearch} = this.state;
         const filteredEvents = this.getFilteredEvents();
 
         let tagMessage;
@@ -78,11 +81,11 @@ class EventsPage extends Component {
 
         const eventCards = filteredEvents.map((event, index) => <EventCard event={event} key={index} />);
         return (
-            <div class='page events-page' style={this.state.inSearch ? 'transform: translate3d(75%, 0, 0)' : ''}>
+            <div class='page events-page' style={this.state.inSearch ? '-webkit-transform: translate3d(75%, 0, 0)' : ''}>
                 <div class='sidebar' key={0}>
-                    {this.state.inSearch ? <SearchBar onSearchStarted={this.onSearchStarted.bind(this)} /> : null}
+                    {inSearch ? <SearchBar onSearchStarted={this.onSearchStarted.bind(this)} /> : null}
                 </div>
-                <div class='main' key={1}>
+                <div class='main' key={1} style={inSearch ? 'opacity: 0.5; background: #b7b7b7' : 'null'}>
                     <div class='top-menu' key={0}>
                         <img src={searchIcon} alt='Search' style='width: 24px' onclick={this.onSearchIconClicked.bind(this)} />
                         <span>BlackCat</span>

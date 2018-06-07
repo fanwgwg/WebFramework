@@ -28,6 +28,24 @@ class SearchBar extends Component {
         if (this.props.toTime && this.toTimeInput) {
             this.toTimeInput.value = Utils.getFormattedDate(this.props.toTime);
         }
+
+        window.addEventListener('click', this.clickHandler, false);
+
+        Utils.disableScroll();
+    }
+
+    componentWillUnmount() {
+        Utils.enableScroll();
+
+        window.removeEventListener('click', this.clickHandler, false);
+    }
+
+    clickHandler(e) {
+        if (document.getElementById('searchbar').contains(e.target)) {
+            console.log('click in sidebar');
+        } else {
+            console.log('click outside sidebar');
+        }
     }
 
     onTimeSelected(time) {
@@ -198,7 +216,7 @@ class SearchBar extends Component {
         let searchButtonStyle = this.shouldEnableSearch() ? 'background: gray; cursor: default; opacity: 0.7' : null;
 
         return (
-            <div class='searchbar'>
+            <div class='searchbar' id='searchbar'>
                 <div class='section'>
                     <div class='title'><u>TIME</u></div>
                     <div class='content'>{timeSelections}</div>

@@ -34,3 +34,45 @@ export const hasOverlap = (dateLeftFrom, dateLeftTo, dateRightFrom, dateRightTo)
 
     return false;
 };
+
+let keys = {37: 1, 38: 1, 39: 1, 40: 1};
+
+function preventDefault(e) {
+    e = e || window.event;
+    if (e.preventDefault) {
+        e.preventDefault();
+    }
+    e.returnValue = false;
+}
+
+function preventDefaultForScrollKeys(e) {
+    if (keys[e.keyCode]) {
+        preventDefault(e);
+        return false;
+    }
+}
+
+export function disableScroll() {
+    console.log('disable scroll');
+    if (window.addEventListener) {
+        window.addEventListener('DOMMouseScroll', preventDefault, false);
+    }
+
+    window.onwheel = preventDefault;
+
+    document.ontouchmove = function(e) {
+        e.preventDefault();
+    };
+}
+
+export function enableScroll() {
+    console.log('enable scroll');
+    if (window.removeEventListener) {
+        window.removeEventListener('DOMMouseScroll', preventDefault, false);
+    }
+    window.onwheel = null;
+
+    document.ontouchmove = function(e) {
+        return true;
+    };
+}

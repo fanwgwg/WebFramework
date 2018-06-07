@@ -145,7 +145,6 @@ input:focus {
 .events-page .main {
     height: 100%;
     transition: 0.3s;
-    -webkit-transition: 0.3s;
     overflow-y: hidden;
 }
 
@@ -156,7 +155,7 @@ input:focus {
     justify-content: space-between;
     align-items: center;
     font-size: 16px;
-    position: absolute;
+    position: fixed;
     width: 100%;
     top: 0;
     z-index: 100;
@@ -169,12 +168,15 @@ input:focus {
 }
 
 .events-page .search-popup {
-    margin-top: 50px;
+    left: 0px;
+    top: 50px;
     padding: 10px 16px;
     height: 60px;
     background: #F2F2F2;
     display: flex;
+    right: 0px;
     flex-direction: column;
+    position: fixed;
     justify-content: center;
 }
 
@@ -213,8 +215,8 @@ input:focus {
 
 .events-page .events-container {
     padding: 16px;
-    bottom: 0;
-    position: absolute;
+    bottom: 0px;
+    position: fixed;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
