@@ -3,7 +3,6 @@ import './app.css';
 import reducer from './reducer';
 import SignInPage from './SignInPage';
 import EventsPage from './EventsPage';
-import EventDetailPage from './EventDetailPage';
 
 const store = createStore(reducer);
 
@@ -35,8 +34,7 @@ class App extends Component {
             <div class='app'>
                 <Route key={0} exact path='/' enabled render={() => <SignInPage />} />
                 {/* <Route key={1} exact path='/events' enabled={this.state.isAuthenticated} render={() => <EventsPage />} /> */}
-                <Route key={1} exact path='/events' enabled render={({match}) => <EventsPage match={match}/>} />
-                <Route key={2} exact path='/events/:id' enabled render={({match}) => <EventDetailPage eventId={match.params[0]}/>} />
+                <Route key={1} path='/events' enabled render={({match}) => <EventsPage match={match}/>} />
             </div>
         );
     }

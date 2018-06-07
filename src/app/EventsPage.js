@@ -1,6 +1,7 @@
-import {Component, createElement, connect} from '../framework';
+import {Component, createElement, connect, Route} from '../framework';
 import EventCard from './EventCard';
 import SearchBar from './SearchBar';
+import EventDetail from './EventDetailPage';
 import * as searchIcon from './assets/search.png';
 import * as profileIcon from './assets/profile.png';
 import {events, timeRanges, tags} from './Constants';
@@ -68,7 +69,7 @@ class EventsPage extends Component {
         }
 
         const searchPopup = fromTime || toTime || !tagIds.includes(0) ? (
-            <div class='search-popup' key={2}>
+            <div class='search-popup' key={1}>
                 <div class='result' key={0}>
                     {filteredEvents.length} Results
                     <button onclick={this.onClearSearch.bind(this)}>Clear Filter</button>
@@ -79,10 +80,8 @@ class EventsPage extends Component {
             </div>
         ) : null;
 
-        const eventCards = filteredEvents.map((event, index) => <EventCard event={event} key={index} />);
-
         return (
-            <div class='page events-page' style={this.state.inSearch ? '-webkit-transform: translate3d(75%, 0, 0)' : ''}>
+            <div class='page events-page' style={inSearch ? '-webkit-transform: translate3d(75%, 0, 0)' : ''}>
                 <div class='sidebar' key={0}>
                     {inSearch ? <SearchBar onSearchStarted={this.onSearchStarted.bind(this)} /> : null}
                 </div>
@@ -93,9 +92,14 @@ class EventsPage extends Component {
                         <img src={profileIcon} alt='Profile' />
                     </div>
                     {searchPopup}
-                    <div class='events-container' key={1} style={searchPopup ? 'top: 130px' : 'top: 50px'}>
-                        {eventCards}
-                    </div>
+                    <Route key={2} exact path='/events' enabled render={() => (
+                        <div class='events-container' key={1} style={searchPopup ? 'top: 130px' : 'top: 50px'}>
+                            {filteredEvents.map((event, index) => <EventCard event={event} key={index} />)}
+                        </div>
+                    )} />
+                    <Route key={3} exact path='/events/:id' enabled render={({match}) => (
+                        <EventDetail event={events[match.params[0]]} style={searchPopup ? 'top: 130px' : 'top: 50px'}/>
+                    )} />
                 </div>
             </div>
         );

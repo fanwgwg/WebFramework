@@ -35,6 +35,29 @@ export const hasOverlap = (dateLeftFrom, dateLeftTo, dateRightFrom, dateRightTo)
     return false;
 };
 
+export const getWordCount = str => str.split(' ').length;
+
+export const getStringWithLimit = (str, limit) => str.substring(0, Math.min(str.length, 300));
+
+export const getDateString = date => {
+    let locale = 'en-us';
+    let month = date.toLocaleString(locale, {month: 'long'});
+    let day = date.getDate();
+    let year = date.getFullYear();
+
+    return `${day} ${month} ${year}`;
+};
+
+export const getTimeString = date => {
+    let locale = 'en-us';
+    let timeParts = date.toLocaleTimeString(locale).replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, '$1$3').split(' ');
+
+    return {
+        time: timeParts[0],
+        period: timeParts[1].toLowerCase(),
+    };
+};
+
 let keys = {37: 1, 38: 1, 39: 1, 40: 1};
 
 function preventDefault(e) {

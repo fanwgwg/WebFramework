@@ -13,9 +13,18 @@ const matchPath = (pathname, options) => {
     };
   }
 
-  let keys = [];
-  let re = pathToRegexp(path, keys);
-  let match = re.exec(pathname);
+  let match;
+  if (exact) {
+    let keys = [];
+    let re = pathToRegexp(path, keys);
+    match = re.exec(pathname);
+    console.log(re);
+  } else {
+    match = new RegExp(`^${path}`).exec(pathname);
+  }
+
+  console.log(`pathname: ${pathname}`);
+  console.log(match);
 
   if (!match) {
     return null;
