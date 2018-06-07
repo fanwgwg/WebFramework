@@ -1,16 +1,30 @@
-import {Component, createElement} from '../framework';
+import {Component, createElement, connect} from '../framework';
 import * as timeIcon from './assets/time.png';
 import * as tickIcon from './assets/tick.png';
 import * as heartIcon from './assets/heart.png';
 import {tags} from './Constants';
+import * as Utils from './utils';
 
 export default class EventCard extends Component {
+    constructor(props) {
+        super(props);
+        this.onEventCardClicked = this.onEventCardClicked.bind(this);
+    }
+
+    onEventCardClicked(id) {
+        console.log(`clicked on ${id}`);
+        this.props.onSelectEvent(id);
+    }
+
     render() {
-        let {user, title, tagId, content, startTime, endTime, image} = this.props.event;
+        console.log(this.props);
+        let {user, title, tagId, content, image, id} = this.props.event;
         const {username, picture} = user;
+        const startTime = new Date(this.props.event.startTime);
+        const endTime = new Date(this.props.event.endTime);
 
         return (
-            <div class='event-card'>
+            <div class='event-card' onclick={e => this.onEventCardClicked(id)}>
                 <div class='top'>
                     <div class='user'>
                         <img src={picture} />
@@ -23,10 +37,10 @@ export default class EventCard extends Component {
                         <div class='title'>{title}</div>
                         <div class='time'>
                             <img src={timeIcon} />
-                            {startTime} to {endTime}
+                            {Utils.getDateString(startTime)} to {Utils.getDateString(endTime)}
                         </div>
                     </div>
-                    {image ? <img src={image} /> : null}
+                    {image.length > 0 ? <img src={image[0]} /> : null}
                 </div>
                 <p>{content}</p>
                 <div class='bottom'>

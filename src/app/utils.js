@@ -37,7 +37,7 @@ export const hasOverlap = (dateLeftFrom, dateLeftTo, dateRightFrom, dateRightTo)
 
 export const getWordCount = str => str.split(' ').length;
 
-export const getStringWithLimit = (str, limit) => str.substring(0, Math.min(str.length, 300));
+export const getStringWithLimit = (str, limit) => str.substring(0, Math.min(str.length, 300)) + '...';
 
 export const getDateString = date => {
     let locale = 'en-us';

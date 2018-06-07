@@ -71,6 +71,8 @@ export const connect = (mapStateToProps, mapDispatchToProps) => {
                     dispatchProps = mapDispatchToProps(globalStore.dispatch, this.props);
                 }
 
+                console.log(this.props);
+
                 return (
                     <WrappedComponent
                         {...this.props}

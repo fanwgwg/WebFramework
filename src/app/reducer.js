@@ -27,6 +27,8 @@ const reducer = (state = initialState, action) => {
                 searchTimeFilter: timeRanges.ANYTIME,
                 searchTagFilter: [0],
             };
+        case Actions.SELECT_EVENT:
+            return state;
         default:
             return initialState;
     }

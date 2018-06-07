@@ -17,6 +17,10 @@ class EventsPage extends Component {
     }
 
     onSearchIconClicked() {
+        if (this.state.inSearch) {
+            return;
+        }
+
         Utils.disableScroll();
         this.setState({
             inSearch: true,
@@ -31,8 +35,12 @@ class EventsPage extends Component {
     }
 
     onClearSearch() {
-        console.log('clear search');
         this.props.clearSearchFilter();
+    }
+
+    onSelectEvent(id) {
+        history.pushState({}, null, `/events/${id}`);
+        this.forceUpdate();
     }
 
     getFilteredEvents() {
@@ -94,11 +102,16 @@ class EventsPage extends Component {
                     {searchPopup}
                     <Route key={2} exact path='/events' enabled render={() => (
                         <div class='events-container' key={1} style={searchPopup ? 'top: 130px' : 'top: 50px'}>
-                            {filteredEvents.map((event, index) => <EventCard event={event} key={index} />)}
+                            {filteredEvents.map((event, index) =>
+                                <EventCard
+                                    event={event}
+                                    onSelectEvent={this.onSelectEvent.bind(this)}
+                                    key={index}
+                                />)}
                         </div>
                     )} />
                     <Route key={3} exact path='/events/:id' enabled render={({match}) => (
-                        <EventDetail event={events[match.params[0]]} style={searchPopup ? 'top: 130px' : 'top: 50px'}/>
+                        <EventDetail event={events[match.params[0]]} style={searchPopup ? 'top: 130px' : 'top: 50px'} />
                     )} />
                 </div>
             </div>

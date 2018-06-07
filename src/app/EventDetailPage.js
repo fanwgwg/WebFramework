@@ -8,13 +8,38 @@ import * as rightArrow from './assets/right-arrow.png';
 import * as Utils from './utils';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 
+const tabsInfo = [
+    {
+        text: 'Details',
+        icon: detailIcon,
+    },
+    {
+        text: 'Participants',
+        icon: participantsIcon,
+    },
+    {
+        text: 'Comments',
+        icon: commentsIcon,
+    },
+];
+
 class EventDetail extends Component {
     constructor(props) {
         super(props);
-        this.map = null;
+        this.state = {
+            showAllContent: false,
+        };
     }
 
     componentDidMount() {
+        this.addMap();
+    }
+
+    componentDidUpdate() {
+        // this.addMap();
+    }
+
+    addMap() {
         const {lnglat, description} = this.props.event.location;
         mapboxgl.accessToken = 'pk.eyJ1IjoibGFoYWxhaGEiLCJhIjoiY2ppMm92aWk0MDBlMDNxbzRtaGY2aDhjaCJ9.GXYAQLGcDdLFuFs0-5l9Bw';
         this.map = new mapboxgl.Map({
@@ -31,24 +56,18 @@ class EventDetail extends Component {
             .addTo(this.map);
     }
 
+    onReadMoreClicked() {
+        this.setState({
+            showAllContent: !this.state.showAllContent,
+        });
+    }
+
     render() {
         const {event, style} = this.props;
+        const {showAllContent} = this.state;
         const startTime = new Date(event.startTime);
         const endTime = new Date(event.endTime);
-        const tabsInfo = [
-            {
-                text: 'Details',
-                icon: detailIcon,
-            },
-            {
-                text: 'Participants',
-                icon: participantsIcon,
-            },
-            {
-                text: 'Comments',
-                icon: commentsIcon,
-            },
-        ];
+
         const tabElements = tabsInfo.map((info, index) => (
             <div key={index} class='tab'>
                 <img src={info.icon} />
@@ -59,31 +78,34 @@ class EventDetail extends Component {
             <img src={i} key={index} />
         ));
         let {content} = event;
-        if (content.length > 300) {
+        if (!showAllContent && content.length > 300) {
             content = Utils.getStringWithLimit(content, 300);
-            content += '...';
         }
+
+        const eventPics = event.image ? <div class='event-pics'>{images}</div> : null;
 
         return (
             <div class='event-detail' style={style}>
-                <div class='tag'>{tags[event.tagId]}</div>
-                <div class='title'>{event.title}</div>
-                <div class='user-info'>
+                <div class='tag' key={0}>{tags[event.tagId]}</div>
+                <div class='title' key={1}>{event.title}</div>
+                <div class='user-info' key={2}>
                     <img src={event.user.picture} />
                     <div class='right'>
                         <div class='username'>{event.user.username}</div>
                         <div class='publish-time'>Published on {event.publishTime}</div>
                     </div>
                 </div>
-                <div class='divider' />
-                <div class='tabs-container'>
+                <div class='divider' key={3}/>
+                <div class='tabs-container' key={4}>
                     {tabElements}
                 </div>
-                <div class='divider' />
-                <div class='event-pics'>{images}</div>
-                <p>{content}</p>
-                <button class='read-more-button'>Read more</button>
-                <div class='section'>
+                <div class='divider' key={5} />
+                    {eventPics}
+                <p key={6}>{content}</p>
+                <button key={7} class='read-more-button' onclick={this.onReadMoreClicked.bind(this)}>
+                    {showAllContent ? 'Show less' : 'Read more'}
+                </button>
+                <div class='section' key={8}>
                     <div class='name'>When</div>
                     <div class='time-container'>
                         <div class='time-block'>
@@ -109,12 +131,12 @@ class EventDetail extends Component {
                         </div>
                     </div>
                 </div>
-                <div class='section'>
+                <div class='section' key={9}>
                     <div class='name'>Where</div>
                     <div class='map-container' id='map-container'>
                     </div>
                 </div>
-                <div class='divider' />
+                <div class='divider' key={10} />
             </div>
         );
     }
