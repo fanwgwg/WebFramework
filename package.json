@@ -3,10 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {
-    "mapbox-gl": "^0.45.0",
-    "path-to-regexp": "^2.2.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
@@ -17,16 +14,20 @@
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
     "file-loader": "^1.1.11",
+    "json-server": "^0.13.0",
     "style-loader": "^0.21.0",
     "webpack": "^4.9.1",
     "webpack-cli": "^2.1.4",
-    "webpack-dev-server": "^3.1.4"
+    "webpack-dev-server": "^3.1.4",
+    "mapbox-gl": "^0.45.0",
+    "path-to-regexp": "^2.2.1"
   },
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "start": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint ./src"
+    "lint": "eslint ./src",
+    "serve": "node ./server/server.js"
   },
   "keywords": [],
   "author": "",

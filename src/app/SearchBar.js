@@ -184,9 +184,9 @@ class SearchBar extends Component {
         if ((isTyping == 0 && !fromTime)
             || (isTyping == 1 && !toTime)) {
             message = 'Time format incorrect, the correct format should be YYYY-MM-DD';
-        } else if (isTyping == 0 && fromTime
-            && isTyping == 1 && toTime
-            && fromTime > toTime) {
+        } else if ((isTyping == 0 && fromTime
+            || isTyping == 1 && toTime)
+            && fromTime && toTime && fromTime > toTime) {
             message = 'The from time should be earlier than to time.';
         } else if ((isTyping == 0 && fromTime)
             || (isTyping == 1 && toTime)) {

@@ -27,8 +27,21 @@ class EventDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isLoading: true,
             showAllContent: false,
         };
+    }
+
+    componentWillMount() {
+        fetch(`http://localhost:3000/events/${this.props.eventId}`)
+            .then(response => {
+                return response.json();
+            }).then(json => {
+                this.event = json;
+                this.setState({
+                    isLoading: false,
+                });
+            });
     }
 
     componentDidMount() {
@@ -36,7 +49,7 @@ class EventDetail extends Component {
     }
 
     addMap() {
-        const {lnglat, description} = this.props.event.location;
+        const {lnglat, description} = this.event.location;
         mapboxgl.accessToken = 'pk.eyJ1IjoibGFoYWxhaGEiLCJhIjoiY2ppMm92aWk0MDBlMDNxbzRtaGY2aDhjaCJ9.GXYAQLGcDdLFuFs0-5l9Bw';
         this.map = new mapboxgl.Map({
             container: 'map-container',
@@ -59,10 +72,18 @@ class EventDetail extends Component {
     }
 
     render() {
-        const {event, style} = this.props;
+        if (this.state.isLoading) {
+            return (
+                <div>
+                    Loading
+                </div>
+            );
+        }
+
+        const {style} = this.props;
         const {showAllContent} = this.state;
-        const startTime = new Date(event.startTime);
-        const endTime = new Date(event.endTime);
+        const startTime = new Date(this.event.startTime);
+        const endTime = new Date(this.event.endTime);
 
         const tabElements = tabsInfo.map((info, index) => (
             <div key={index} class='tab'>
@@ -70,25 +91,25 @@ class EventDetail extends Component {
                 <span>{info.text}</span>
             </div>
         ));
-        const images = event.image.map((i, index) => (
+        const images = this.event.image.map((i, index) => (
             <img src={i} key={index} />
         ));
-        let {content} = event;
+        let {content} = this.event;
         if (!showAllContent && content.length > 300) {
             content = Utils.getStringWithLimit(content, 300);
         }
 
-        const eventPics = event.image ? <div class='event-pics'>{images}</div> : null;
+        const eventPics = this.event.image ? <div class='event-pics'>{images}</div> : null;
 
         return (
             <div class='event-detail' style={style}>
-                <div class='tag' key={0}>{tags[event.tagId]}</div>
-                <div class='title' key={1}>{event.title}</div>
+                <div class='tag' key={0}>{tags[this.event.tagId]}</div>
+                <div class='title' key={1}>{this.event.title}</div>
                 <div class='user-info' key={2}>
-                    <img src={event.user.picture} />
+                    <img src={this.event.user.picture} />
                     <div class='right'>
-                        <div class='username'>{event.user.username}</div>
-                        <div class='publish-time'>Published on {event.publishTime}</div>
+                        <div class='username'>{this.event.user.username}</div>
+                        <div class='publish-time'>Published on {this.event.publishTime}</div>
                     </div>
                 </div>
                 <div class='divider' key={3} />
@@ -129,7 +150,7 @@ class EventDetail extends Component {
                 </div>
                 <div class='section' key={9}>
                     <div class='name'>Where</div>
-                    <MapWrapper lnglat={event.location.lnglat} description={event.location.description} />
+                    <MapWrapper lnglat={this.event.location.lnglat} description={this.event.location.description} />
                 </div>
                 <div class='divider' key={10} />
             </div >

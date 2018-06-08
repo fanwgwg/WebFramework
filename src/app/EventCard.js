@@ -40,7 +40,7 @@ export default class EventCard extends Component {
                     </div>
                     {image.length > 0 ? <img src={image[0]} /> : null}
                 </div>
-                <p>{content}</p>
+                <p>{Utils.getStringWithLimit(content, 300)}</p>
                 <div class='bottom'>
                     <div class='option noselect'>
                         <img src={tickIcon} />
