@@ -217,7 +217,39 @@
           1.2833754
         ],
         "description": "Marina Bay Sands"
-      }
+      },
+      "comments": [
+        {
+          "from": {
+            "userid": 1,
+            "username": "Sophia",
+            "picture": "http://localhost:3000/images/user-1.jpeg"
+          },
+          "replyTo": null,
+          "content": "It looks like a nice show!",
+          "time": "2018-06-08T17:30:20"
+        },
+        {
+          "from": {
+            "userid": 2,
+            "username": "William",
+            "picture": "http://localhost:3000/images/user-2.jpeg"
+          },
+          "replyTo": null,
+          "content": "It looks like a nice show!",
+          "time": "2018-06-08T17:30:20"
+        },
+        {
+          "from": {
+            "userid": 3,
+            "username": "Jacob",
+            "picture": "http://localhost:3000/images/user-3.jpeg"
+          },
+          "replyTo": null,
+          "content": "It looks like a nice show!",
+          "time": "2018-06-08T17:30:20"
+        }
+      ]
     }
   ]
 }

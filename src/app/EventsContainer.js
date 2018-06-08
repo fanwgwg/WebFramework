@@ -90,6 +90,7 @@ export default class EventsContainer extends Component {
                 {noResultMessage}
                 {filteredEvents.map((event, index) =>
                     <EventCard
+                        currentUser={this.props.currentUser}
                         event={event}
                         onSelectEvent={() => this.props.onSelectEvent(event.id)}
                         key={index}

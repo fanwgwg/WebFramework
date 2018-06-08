@@ -1,11 +1,18 @@
-import {Component, createElement} from '../framework';
+import {Component, createElement, connect} from '../framework';
 import {tags} from './Constants';
 import MapWrapper from './MapWrapper';
+import Comments from './Comments';
 import * as detailIcon from './assets/info.png';
 import * as participantsIcon from './assets/people.png';
 import * as commentsIcon from './assets/comments.png';
+import * as heartIcon from './assets/heart-gray.png';
 import * as leftArrow from './assets/left-arrow.png';
 import * as rightArrow from './assets/right-arrow.png';
+import * as penGreenIcon from './assets/pen-green.png';
+import * as heartGreenIcon from './assets/heart-green.png';
+import * as tickGreenIcon from './assets/tick-green.png';
+import * as heartPurpleIcon from './assets/heart-purple.png';
+import * as tickPurpleIcon from './assets/tick-purple.png';
 import * as Utils from './utils';
 import * as API from './api';
 
@@ -24,7 +31,7 @@ const tabsInfo = [
     },
 ];
 
-class EventDetail extends Component {
+export default class EventDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -35,8 +42,9 @@ class EventDetail extends Component {
 
     componentWillMount() {
         API.getEventById(this.props.eventId, eventData => {
-            this.event = eventData;
-            API.getUserById(eventData.userid, userInfo => {
+            this.event = eventData.event;
+            this.responses = eventData.responses;
+            API.getUserById(eventData.event.userid, userInfo => {
                 this.user = userInfo;
                 this.setState({
                     isLoading: false,
@@ -49,21 +57,26 @@ class EventDetail extends Component {
         this.props.onEnterDetail();
     }
 
-    addMap() {
-        const {lnglat, description} = this.event.location;
-        mapboxgl.accessToken = 'pk.eyJ1IjoibGFoYWxhaGEiLCJhIjoiY2ppMm92aWk0MDBlMDNxbzRtaGY2aDhjaCJ9.GXYAQLGcDdLFuFs0-5l9Bw';
-        this.map = new mapboxgl.Map({
-            container: 'map-container',
-            style: 'mapbox://styles/mapbox/streets-v10',
-            center: lnglat,
-            zoom: 16,
-        });
+    onGoingClicked() {
+        if (!this.user) {
+            return;
+        }
 
-        let markerElement = <div class='map-marker' />;
-        new mapboxgl.Marker(markerElement)
-            .setLngLat(lnglat)
-            .setPopup(new mapboxgl.Popup({offset: 10}).setHTML(description))
-            .addTo(this.map);
+        const isGoing = this.responses.going.map(r => r.userid).includes(this.props.currentUser.id);
+        API.goForEvent(this.props.currentUser.id, this.event.id, isGoing, () => {
+            this.fetchData();
+        });
+    }
+
+    onLikeClicked() {
+        if (!this.user) {
+            return;
+        }
+
+        const like = this.responses.likes.map(r => r.userid).includes(this.props.currentUser.id);
+        API.likeEvent(this.props.currentUser.id, this.event.id, like, () => {
+            this.fetchData();
+        });
     }
 
     onReadMoreClicked() {
@@ -85,6 +98,7 @@ class EventDetail extends Component {
         const {showAllContent} = this.state;
         const startTime = new Date(this.event.startTime);
         const endTime = new Date(this.event.endTime);
+        let {content} = this.event;
 
         const tabElements = tabsInfo.map((info, index) => (
             <div key={index} class='tab'>
@@ -92,15 +106,20 @@ class EventDetail extends Component {
                 <span>{info.text}</span>
             </div>
         ));
+
         const images = this.event.image.map((i, index) => (
             <img src={i} key={index} />
         ));
-        let {content} = this.event;
+
+
         if (!showAllContent && content.length > 300) {
             content = Utils.getStringWithLimit(content, 300);
         }
 
         const eventPics = this.event.image ? <div class='event-pics'>{images}</div> : null;
+        const isGoing = this.responses.going.map(r => r.userid).includes(this.props.currentUser.id);
+        const like = this.responses.likes.map(r => r.userid).includes(this.props.currentUser.id);
+        const shouldShowComment = this.event.comments && this.event.comments.length > 0;
 
         return (
             <div class='event-detail' style={style}>
@@ -154,9 +173,43 @@ class EventDetail extends Component {
                     <MapWrapper lnglat={this.event.location.lnglat} description={this.event.location.description} />
                 </div>
                 <div class='divider' key={10} />
+                <div class='responses'>
+                    <div class='section'>
+                        <div class='info'>
+                            <img src={heartIcon} />
+                            {this.responses.going.length} going
+                        </div>
+                        <div class='users'>
+                            {this.responses.going.map(user => <img src={user.picture} />)}
+                        </div>
+                    </div>
+                    <div class='section'>
+                        <div class='info'>
+                            <img src={heartIcon} />
+                            {this.responses.likes.length} likes
+                        </div>
+                        <div class='users'>
+                            {this.responses.likes.map(user => <img src={user.picture} />)}
+                        </div>
+                    </div>
+                </div>
+                {shouldShowComment ? <div class='divider' /> : null}
+                {shouldShowComment ? <Comments event={this.event} /> : null}
+                <div class='action-bar'>
+                    <button>
+                        <img src={penGreenIcon} />
+                        Comment
+                    </button>
+                    <button style={like ? 'background: #D5EF7F; color: #8560A9' : null}>
+                        <img src={like ? heartPurpleIcon : heartGreenIcon} />
+                        Like
+                    </button>
+                    <button style={isGoing ? 'background: #D5EF7F; color: #8560A9' : null}>
+                        <img src={isGoing? tickPurpleIcon : tickGreenIcon} />
+                        Going
+                    </button>
+                </div>
             </div >
         );
     }
 };
-
-export default EventDetail;

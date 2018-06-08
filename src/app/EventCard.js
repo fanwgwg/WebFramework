@@ -2,8 +2,8 @@ import {Component, createElement, connect} from '../framework';
 import * as timeIcon from './assets/time.png';
 import * as tickIcon from './assets/tick.png';
 import * as heartIcon from './assets/heart.png';
-import * as tickShapeIcon from './assets/tick-shape.png';
-import * as heartShapeIcon from './assets/heart-shape.png';
+import * as tickShapeIcon from './assets/tick-purple.png';
+import * as heartShapeIcon from './assets/heart-purple.png';
 import {tags} from './Constants';
 import * as Utils from './utils';
 import * as API from './api';
@@ -19,6 +19,10 @@ export default class EventCard extends Component {
     }
 
     componentWillMount() {
+        this.fetchData();
+    }
+
+    fetchData() {
         API.getUserById(this.props.event.userid, data => {
             API.getEventResponses(this.props.event.id, responses => {
                 this.setState({
@@ -43,9 +47,9 @@ export default class EventCard extends Component {
             return;
         }
 
-        const isGoing = user.going.includes(event.id);
+        const isGoing = !user.going.includes(event.id);
         API.goForEvent(user.id, event.id, isGoing, () => {
-            this.forceUpdate();
+            this.fetchData();
         });
     }
 
@@ -59,9 +63,9 @@ export default class EventCard extends Component {
             return;
         }
 
-        const like = user.likes.includes(event.id);
+        const like = !user.likes.includes(event.id);
         API.likeEvent(user.id, event.id, like, () => {
-            this.forceUpdate();
+            this.fetchData();
         });
     }
 
@@ -70,8 +74,8 @@ export default class EventCard extends Component {
         const {user, responses} = this.state;
         const startTime = new Date(this.props.event.startTime);
         const endTime = new Date(this.props.event.endTime);
-        const isGoing = user ? user.going.includes(id) : false;
-        const likes = user ? user.likes.includes(id) : false;
+        const isGoing = this.props.currentUser.going.includes(id);
+        const likes = this.props.currentUser.likes.includes(id);
 
         const interactionArea = (user && responses) ? (
             <div class='bottom'>

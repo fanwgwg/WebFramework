@@ -460,7 +460,7 @@ input:focus {
     left: 0px;
     overflow-y: auto;
     right: 0px;
-    bottom: 0px;
+    bottom: 55px;
     -webkit-overflow-scrolling: touch;
 }
 
@@ -622,4 +622,103 @@ input:focus {
     height: 120px;
     margin: 12px 0 16px 0;
     border-radius: 5px;
+}
+
+.event-detail .responses .section {
+    display: flex;
+    color: #BABABA;
+    margin-top: 16px;
+}
+
+.event-detail .responses .section .info {
+    display: flex;
+    margin-right: 20px;
+    align-items: center;
+    width: 64px;
+}
+
+.event-detail .responses .section .info img {
+    width: 14px;
+    height: 18px;
+    object-fit: contain;
+    margin-right: 5px;
+}
+
+.event-detail .responses .section .users img {
+    border-radius: 50%;
+    object-fit: contain;
+    width: 30px;
+    margin-right: 5px;
+    border: 2px solid gainsboro
+}
+
+.event-detail .comment-block {
+    display: flex;
+    justify-content: stretch;
+    margin-bottom: 16px;
+    align-items: center;
+}
+
+.event-detail .comment-block .user-icon {
+    border-radius: 50%;
+    object-fit: contain;
+    height: 30px;
+    margin-right: 16px;
+    border: 2px solid gainsboro
+}
+
+.event-detail .comment-block .content {
+    width: 100%;
+    color: #67616D;
+    font-size: 14px;
+}
+
+.event-detail .comment-block .content .top {
+    color: #AC8EC9;
+}
+
+.event-detail .comment-block .top span {
+    color: #BABABA;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.event-detail .comment-block button {
+    float: right;
+}
+
+.event-detail .comment-block button img {
+    border: none;
+    object-fit: contain;
+    width: 20px;
+    height: 20px;
+}
+
+.event-detail .action-bar {
+    display: flex;
+    justify-content: space-around;
+    background: #8560A9;
+    height: 55px;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+}
+
+.event-detail .action-bar img {
+    object-fit: contain;
+    height: 12px;
+    margin-right: 8px;
+}
+
+.event-detail .action-bar button {
+    color: #E5F7A9;
+    align-items: center;
+    display: flex;
+    font-size: 12px;
+    border: 1px solid #E5F7A9;
+    border-radius: 20px;
+    padding: 8px 15px;
 }

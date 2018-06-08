@@ -30,7 +30,12 @@ export const getEventById = (id, callback) => {
         .then(response => {
             return response.json();
         }).then(json => {
-            callback(json);
+            getEventResponses(id, responses => {
+                callback({
+                    event: json,
+                    responses,
+                });
+            });
         });
 };
 
@@ -42,6 +47,7 @@ export const getEventResponses = (id, callback) => {
         users.forEach(user => {
             if (user.likes.includes(id)) {
                 likes.push({
+                    userid: user.id,
                     username: user.username,
                     picture: user.picture,
                 });
@@ -49,6 +55,7 @@ export const getEventResponses = (id, callback) => {
 
             if (user.going.includes(id)) {
                 going.push({
+                    userid: user.id,
                     username: user.username,
                     picture: user.picture,
                 });
@@ -59,11 +66,11 @@ export const getEventResponses = (id, callback) => {
     });
 };
 
-export const goForEvent = (userId, eventId, going, callback) => {
+export const goForEvent = (userId, eventId, isGoing, callback) => {
     getUserById(userId, user => {
         let going = user.going;
 
-        if (going) {
+        if (isGoing) {
             going.push(eventId);
         } else {
             let index = going.indexOf(eventId);
@@ -72,15 +79,15 @@ export const goForEvent = (userId, eventId, going, callback) => {
             }
         }
 
+        user.going = going;
+
         fetch(`http://localhost:3000/users/${userId}`, {
             method: 'put',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                going: going,
-            }),
+            body: JSON.stringify(user),
         }).then(response => {
             return response.json();
         }).then(json => {
@@ -101,6 +108,7 @@ export const likeEvent = (userId, eventId, like, callback) => {
                 likes.splice(index, 1);
             }
         }
+        user.likes = likes;
 
         fetch(`http://localhost:3000/users/${userId}`, {
             method: 'put',
@@ -108,9 +116,7 @@ export const likeEvent = (userId, eventId, like, callback) => {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                likes: likes,
-            }),
+            body: JSON.stringify(user),
         }).then(response => {
             return response.json();
         }).then(json => {

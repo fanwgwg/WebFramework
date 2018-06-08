@@ -81,6 +81,7 @@ class EventsPage extends Component {
                     </div>
                     <Route key={2} exact path='/events' enabled render={() => (
                         <EventContainer
+                            currentUser={this.props.currentUser}
                             time={time}
                             fromTime={fromTime}
                             toTime={toTime}
@@ -91,7 +92,8 @@ class EventsPage extends Component {
                     )} />
                     <Route key={3} exact path='/events/:id' enabled render={({match}) => (
                         <EventDetail
-                            eventId={match.params[0]}
+                            currentUser={this.props.currentUser}
+                            eventId={parseInt(match.params[0])}
                             style='top: 50px'
                             onEnterDetail={this.onEnterDetail.bind(this)}
                         />
