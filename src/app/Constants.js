@@ -74,7 +74,7 @@ export const tags = ['All', 'Exhibition', 'Entertainment', 'Musical', 'Sale', 'S
 
 export const events = [
     {
-        id: 1,
+        id: 0,
         user: {
             username: 'Sophia',
             picture: user1,
@@ -92,7 +92,7 @@ export const events = [
         },
     },
     {
-        id: 2,
+        id: 1,
         user: {
             username: 'William',
             picture: user2,
@@ -110,7 +110,7 @@ export const events = [
         },
     },
     {
-        id: 3,
+        id: 2,
         user: {
             username: 'Jacob',
             picture: user3,
@@ -128,7 +128,7 @@ export const events = [
         },
     },
     {
-        id: 4,
+        id: 3,
         user: {
             username: 'Isabella',
             picture: user4,
@@ -146,7 +146,7 @@ export const events = [
         },
     },
     {
-        id: 5,
+        id: 4,
         user: {
             username: 'Alexander',
             picture: user5,
@@ -164,7 +164,7 @@ export const events = [
         },
     },
     {
-        id: 6,
+        id: 5,
         user: {
             username: 'Olivia',
             picture: user6,

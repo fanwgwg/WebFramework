@@ -4,6 +4,7 @@ import SearchBar from './SearchBar';
 import EventDetail from './EventDetailPage';
 import * as searchIcon from './assets/search.png';
 import * as profileIcon from './assets/profile.png';
+import * as homeIcon from './assets/home.png';
 import {events, timeRanges, tags} from './Constants';
 import * as Utils from './utils';
 import * as Actions from './action';
@@ -13,18 +14,25 @@ class EventsPage extends Component {
         super(props);
         this.state = {
             inSearch: false,
+            inDetail: false,
         };
     }
 
-    onSearchIconClicked() {
-        if (this.state.inSearch) {
-            return;
-        }
+    onMenuIconClicked() {
+        const {inSearch, inDetail} = this.state;
 
-        Utils.disableScroll();
-        this.setState({
-            inSearch: true,
-        });
+        if (inDetail) {
+            history.pushState({}, null, `/events`);
+            this.setState({
+                inDetail: false,
+            });
+            return;
+        } else if (!inSearch) {
+            Utils.disableScroll();
+            this.setState({
+                inSearch: true,
+            });
+        }
     }
 
     onSearchStarted() {
@@ -40,7 +48,17 @@ class EventsPage extends Component {
 
     onSelectEvent(id) {
         history.pushState({}, null, `/events/${id}`);
-        this.forceUpdate();
+        this.setState({
+            inDetail: true,
+        });
+    }
+
+    onEnterDetail() {
+        if (!this.state.inDetail) {
+            this.setState({
+                inDetail: true,
+            });
+        }
     }
 
     getFilteredEvents() {
@@ -64,7 +82,7 @@ class EventsPage extends Component {
 
     render() {
         const {time, fromTime, toTime, tagIds, match} = this.props;
-        const {inSearch} = this.state;
+        const {inSearch, inDetail} = this.state;
         const filteredEvents = this.getFilteredEvents();
 
         let tagMessage;
@@ -95,7 +113,12 @@ class EventsPage extends Component {
                 </div>
                 <div class='main' key={1} style={inSearch ? 'opacity: 0.5; background: #b7b7b7' : 'null'}>
                     <div class='top-menu' key={0}>
-                        <img src={searchIcon} alt='Search' style='width: 24px' onclick={this.onSearchIconClicked.bind(this)} />
+                        <img
+                            src={inDetail ? homeIcon : searchIcon}
+                            alt={inDetail ? 'Home' : 'Search'}
+                            style='width: 24px'
+                            onclick={this.onMenuIconClicked.bind(this)}
+                        />
                         <span>BlackCat</span>
                         <img src={profileIcon} alt='Profile' />
                     </div>
@@ -111,7 +134,11 @@ class EventsPage extends Component {
                         </div>
                     )} />
                     <Route key={3} exact path='/events/:id' enabled render={({match}) => (
-                        <EventDetail event={events[match.params[0]]} style={searchPopup ? 'top: 130px' : 'top: 50px'} />
+                        <EventDetail
+                            event={events[match.params[0]]}
+                            style={searchPopup ? 'top: 130px' : 'top: 50px'}
+                            onEnterDetail={this.onEnterDetail.bind(this)}
+                        />
                     )} />
                 </div>
             </div>

@@ -12,12 +12,10 @@ export default class EventCard extends Component {
     }
 
     onEventCardClicked(id) {
-        console.log(`clicked on ${id}`);
         this.props.onSelectEvent(id);
     }
 
     render() {
-        console.log(this.props);
         let {user, title, tagId, content, image, id} = this.props.event;
         const {username, picture} = user;
         const startTime = new Date(this.props.event.startTime);

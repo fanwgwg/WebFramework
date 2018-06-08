@@ -1,12 +1,12 @@
 import {Component, createElement} from '../framework';
 import {tags} from './Constants';
+import MapWrapper from './MapWrapper';
 import * as detailIcon from './assets/info.png';
 import * as participantsIcon from './assets/people.png';
 import * as commentsIcon from './assets/comments.png';
 import * as leftArrow from './assets/left-arrow.png';
 import * as rightArrow from './assets/right-arrow.png';
 import * as Utils from './utils';
-import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 
 const tabsInfo = [
     {
@@ -32,11 +32,7 @@ class EventDetail extends Component {
     }
 
     componentDidMount() {
-        this.addMap();
-    }
-
-    componentDidUpdate() {
-        // this.addMap();
+        this.props.onEnterDetail();
     }
 
     addMap() {
@@ -95,12 +91,12 @@ class EventDetail extends Component {
                         <div class='publish-time'>Published on {event.publishTime}</div>
                     </div>
                 </div>
-                <div class='divider' key={3}/>
+                <div class='divider' key={3} />
                 <div class='tabs-container' key={4}>
                     {tabElements}
                 </div>
                 <div class='divider' key={5} />
-                    {eventPics}
+                {eventPics}
                 <p key={6}>{content}</p>
                 <button key={7} class='read-more-button' onclick={this.onReadMoreClicked.bind(this)}>
                     {showAllContent ? 'Show less' : 'Read more'}
@@ -133,11 +129,10 @@ class EventDetail extends Component {
                 </div>
                 <div class='section' key={9}>
                     <div class='name'>Where</div>
-                    <div class='map-container' id='map-container'>
-                    </div>
+                    <MapWrapper lnglat={event.location.lnglat} description={event.location.description} />
                 </div>
                 <div class='divider' key={10} />
-            </div>
+            </div >
         );
     }
 };
