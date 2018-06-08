@@ -3,9 +3,7 @@ import SearchBar from './SearchBar';
 import EventDetail from './EventDetailPage';
 import EventContainer from './EventsContainer';
 import * as searchIcon from './assets/search.png';
-import * as profileIcon from './assets/profile.png';
 import * as homeIcon from './assets/home.png';
-import {timeRanges, tags} from './Constants';
 import * as Utils from './utils';
 import * as Actions from './action';
 
@@ -62,7 +60,7 @@ class EventsPage extends Component {
     }
 
     render() {
-        const {time, fromTime, toTime, tagIds, match} = this.props;
+        const {time, fromTime, toTime, tagIds, currentUser} = this.props;
         const {inSearch, inDetail} = this.state;
 
         return (
@@ -79,7 +77,7 @@ class EventsPage extends Component {
                             onclick={this.onMenuIconClicked.bind(this)}
                         />
                         <span>BlackCat</span>
-                        <img src={profileIcon} alt='Profile' />
+                        <img src={currentUser.picture} alt='Profile' />
                     </div>
                     <Route key={2} exact path='/events' enabled render={() => (
                         <EventContainer
@@ -106,6 +104,7 @@ class EventsPage extends Component {
 
 const mapStateToProps = state => {
     return {
+        currentUser: state.currentUser,
         time: state.searchTimeFilter ? state.searchTimeFilter : null,
         fromTime: state.searchTimeFilter ? state.searchTimeFilter.fromTime : null,
         toTime: state.searchTimeFilter ? state.searchTimeFilter.toTime : null,

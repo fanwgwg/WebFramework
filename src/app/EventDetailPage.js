@@ -7,6 +7,7 @@ import * as commentsIcon from './assets/comments.png';
 import * as leftArrow from './assets/left-arrow.png';
 import * as rightArrow from './assets/right-arrow.png';
 import * as Utils from './utils';
+import * as API from './api';
 
 const tabsInfo = [
     {
@@ -33,15 +34,15 @@ class EventDetail extends Component {
     }
 
     componentWillMount() {
-        fetch(`http://localhost:3000/events/${this.props.eventId}`)
-            .then(response => {
-                return response.json();
-            }).then(json => {
-                this.event = json;
+        API.getEventById(this.props.eventId, eventData => {
+            this.event = eventData;
+            API.getUserById(eventData.userid, userInfo => {
+                this.user = userInfo;
                 this.setState({
                     isLoading: false,
                 });
             });
+        });
     }
 
     componentDidMount() {
@@ -106,9 +107,9 @@ class EventDetail extends Component {
                 <div class='tag' key={0}>{tags[this.event.tagId]}</div>
                 <div class='title' key={1}>{this.event.title}</div>
                 <div class='user-info' key={2}>
-                    <img src={this.event.user.picture} />
+                    <img src={this.user.picture} />
                     <div class='right'>
-                        <div class='username'>{this.event.user.username}</div>
+                        <div class='username'>{this.user.username}</div>
                         <div class='publish-time'>Published on {this.event.publishTime}</div>
                     </div>
                 </div>

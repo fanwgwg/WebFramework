@@ -3,12 +3,16 @@ import * as Actions from './action';
 import * as blackcat from './assets/blackcat.png';
 import * as userIcon from './assets/user.png';
 import * as passwordIcon from './assets/password.png';
+import * as API from './api';
 
 class SignInPage extends Component {
     onSignIn() {
         console.log('signing in');
         history.pushState({}, null, '/events');
-        this.props.onSignInSucceed();
+
+        API.getUserById('Henry', data => {
+            this.props.onSignInSucceed(data);
+        });
     }
 
     render() {
@@ -37,7 +41,10 @@ class SignInPage extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSignInSucceed: () => dispatch({type: Actions.SIGN_IN_SUCCEED}),
+        onSignInSucceed: data => dispatch({
+            type: Actions.SIGN_IN_SUCCEED,
+            data,
+        }),
     };
 };
 

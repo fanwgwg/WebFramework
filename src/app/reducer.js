@@ -2,6 +2,14 @@ import * as Actions from './action';
 import {timeRanges} from './Constants';
 
 const initialState = {
+    currentUser: {
+        'id': 0,
+        'username': 'Henry',
+        'picture': 'http://localhost:3000/images/user-0.png',
+        'email': 'henry_1620@gmail.com',
+        'likes': [0, 1, 5],
+        'going': [1, 5],
+    },
     isAuthenticated: false,
     searchTimeFilter: timeRanges.ANYTIME,
     searchTagFilter: [0],
@@ -14,6 +22,7 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 isAuthenticated: true,
+                currentUser: action.data,
             };
         case Actions.UPDATE_SEARCH_FILTER:
             return {

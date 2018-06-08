@@ -3,6 +3,7 @@ import EventCard from './EventCard';
 import {timeRanges, tags} from './Constants';
 import * as Utils from './utils';
 import * as activityIcon from './assets/activity.png';
+import * as API from './api';
 
 export default class EventsContainer extends Component {
     constructor(props) {
@@ -13,17 +14,12 @@ export default class EventsContainer extends Component {
     }
 
     componentWillMount() {
-        this.events = [];
-        fetch('http://localhost:3000/events')
-            .then(response => {
-                return response.json();
-            }).then(json => {
-                console.log(json);
-                this.events = json;
-                this.setState({
-                    isLoading: false,
-                });
+        API.getAllEvents(data => {
+            this.events = data;
+            this.setState({
+                isLoading: false,
             });
+        });
     }
 
     getFilteredEvents() {
