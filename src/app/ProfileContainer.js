@@ -56,6 +56,12 @@ class ProfileContainer extends Component {
         });
     }
 
+    onEventCardUpate() {
+        if (this.state.user.id == this.props.currentUser.id) {
+            this.fetchData(this.state.user.id);
+        }
+    }
+
     render() {
         const {user, activeTab} = this.state;
         const {currentUser} = this.props;
@@ -73,6 +79,7 @@ class ProfileContainer extends Component {
             key={index + 4}
             currentUser={currentUser}
             event={event}
+            onEventCardUpdate={this.onEventCardUpate.bind(this)}
         />);
         const noResultMessage = events[activeTab].length == 0 ? <NoResultContainer key={4} /> : null;
 

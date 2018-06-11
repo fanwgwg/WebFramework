@@ -44,7 +44,6 @@ class EventCard extends Component {
     }
 
     onGoingClicked(e) {
-        console.log(this.props.inSearch);
         if (this.props.inSearch) {
             return;
         }
@@ -61,6 +60,10 @@ class EventCard extends Component {
         const isGoing = !responses.going.map(r => r.userid).includes(this.props.currentUser.id);
         API.goForEvent(this.props.token, currentUser.id, event.id, isGoing, () => {
             this.fetchData();
+
+            if (this.props.onEventCardUpdate) {
+                this.props.onEventCardUpdate();
+            }
         });
     }
 
@@ -81,6 +84,10 @@ class EventCard extends Component {
         const like = !responses.likes.map(r => r.userid).includes(this.props.currentUser.id);
         API.likeEvent(this.props.token, currentUser.id, event.id, like, () => {
             this.fetchData();
+
+            if (this.props.onEventCardUpdate) {
+                this.props.onEventCardUpdate();
+            }
         });
     }
 

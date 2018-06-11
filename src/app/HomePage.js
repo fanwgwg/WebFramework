@@ -1,14 +1,15 @@
 import {Component, createElement, connect, Route} from '../framework';
 import SearchBar from './SearchBar';
-import EventDetail from './EventDetailPage';
+import EventDetail from './EventDetail';
 import EventContainer from './EventsContainer';
 import ProfileContainer from './ProfileContainer';
+import NotFoundPage from './NotFoundPage';
 import * as searchIcon from './assets/search.png';
 import * as homeIcon from './assets/home.png';
 import * as Utils from './utils';
 import * as Actions from './action';
 
-class EventsPage extends Component {
+class HomePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -53,12 +54,12 @@ class EventsPage extends Component {
     }
 
     render() {
-        console.log('render events page');
+        console.log('render home page');
         const {time, fromTime, toTime, tagIds, currentUser} = this.props;
         const {inSearch, inDetail} = this.state;
 
         return (
-            <div class='page events-page' style={inSearch ? '-webkit-transform: translate3d(75%, 0, 0)' : ''}>
+            <div class='page home-page' style={inSearch ? '-webkit-transform: translate3d(75%, 0, 0)' : ''}>
                 <div class='sidebar' key={0}>
                     {inSearch ? <SearchBar onSearchStarted={this.onSearchStarted.bind(this)} /> : null}
                 </div>
@@ -87,6 +88,7 @@ class EventsPage extends Component {
                     <Route key={3} exact path='/profile/:userid' enabled render={({match}) => (
                         <ProfileContainer userid={parseInt(match.params[0])} />
                     )} />
+                    {location.pathname == '/' || location.pathname.startsWith('/events/') || location.pathname.startsWith('/profile/') ? null : <NotFoundPage /> }
                 </div>
             </div>
         );
@@ -111,4 +113,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EventsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

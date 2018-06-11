@@ -137,20 +137,20 @@ input:focus {
     background-color: #231C01;
 }
 
-.events-page {
+.home-page {
     transition: 0.3s;
     -webkit-transition: 0.3s;
 }
 
-.events-page::-webkit-scrollbar {
+.home-page::-webkit-scrollbar {
     display: none;
 }
 
-.events-page::-webkit-scrollbar-thumb {
+.home-page::-webkit-scrollbar-thumb {
     background: transparent;
 }
 
-.events-page .sidebar {
+.home-page .sidebar {
     background: #453257;
     height: 100%;
     width: 75%;
@@ -160,13 +160,13 @@ input:focus {
     -webkit-transition: 0.3s;
 }
 
-.events-page .main {
+.home-page .main {
     height: 100%;
     transition: 0.3s;
     overflow-y: hidden;
 }
 
-.events-page .top-menu {
+.home-page .top-menu {
     height: 50px;
     background: #FFD424;
     display: flex;
@@ -179,13 +179,13 @@ input:focus {
     z-index: 100;
 }
 
-.events-page .top-menu img {
+.home-page .top-menu img {
     object-fit: contain;
     padding: 0 16px;
     width: 30px;
 }
 
-.events-page .search-popup {
+.home-page .search-popup {
     padding: 10px 16px;
     height: 60px;
     background: #F2F2F2;
@@ -198,13 +198,13 @@ input:focus {
     top: 50px;
 }
 
-.events-page .search-popup .result {
+.home-page .search-popup .result {
     display: flex;
     font-size: 16px;
     justify-content: space-between;
 }
 
-.events-page .search-popup .tag {
+.home-page .search-popup .tag {
     border: 1px solid #bdbdbd;
     border-radius: 5px;
     padding: 0px 5px;
@@ -214,7 +214,7 @@ input:focus {
     font-size: 11px;
 }
 
-.events-page .search-popup button {
+.home-page .search-popup button {
     background: #D5EF7F;
     color: #67616D;
     border-radius: 5px;
@@ -223,7 +223,7 @@ input:focus {
     box-shadow: 1px 1px 2px #e0e0e0;
 }
 
-.events-page .search-popup .description {
+.home-page .search-popup .description {
     color: #9f9f9f;
     font-size: 12px;
     padding-top: 5px;
@@ -688,7 +688,7 @@ input:focus {
 .event-detail .comment-block .top .title {
     color: #67616D;
     font-size: 14px;
-}  
+}
 
 .event-detail .comment-block .top .time {
     color: #BABABA;
@@ -827,4 +827,28 @@ input:focus {
     width: 18px;
     object-fit: contain;
     margin-right: 5px;
+}
+
+.not-found-page {
+    background: #FFD424;
+    text-align: center;
+    display: table;
+}
+
+.not-found-page img {
+    width: 100px;
+    display: table-column;
+    object-fit: contain;
+    margin: 0 auto;
+    margin-top: 60%;
+}
+
+.not-found-page button {
+    color: #413400;
+    font-size: 16px;
+    display: table-row;
+    margin-top: 20px;
+    border-radius: 10px;
+    opacity: 0.6;
+    padding: 10px 15px;
 }

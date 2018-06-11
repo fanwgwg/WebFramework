@@ -19,6 +19,8 @@ class SignInPage extends Component {
             console.log(data);
             if (data.status == 200) {
                 console.log('sign in succeed');
+                sessionStorage.setItem('token', data.accessToken);
+                sessionStorage.setItem('userid', data.user.id);
                 this.props.onSignInSucceed({
                     token: data.accessToken,
                     user: data.user,
