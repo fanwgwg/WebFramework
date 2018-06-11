@@ -19,10 +19,7 @@ function diff(virtualElement, container, oldDomElement, parentComponent) {
             updateDomElement(oldDomElement, virtualElement, oldVirtualElement);
         }
 
-        // save the virtualElement on the domElement
-        // so that it can be retrieved it next time
         oldDomElement._virtualElement = virtualElement;
-
         diffList(virtualElement.children, oldDomElement);
     } else {
         // Insert virtual element to DOM if it is a new one
