@@ -1,6 +1,8 @@
 # WebFramework
 
-## The framework
+## The framework (at `./src/framework`)
+
+### Rendering
 The framework I built is based on the philosophy of React, which implements the necessary mechanism of React and provides similar APIs, but some advanced techniques to improve performance used by React are left out here, like incremental reconciliation.
 
 Rendering of the framework is done by storing a virtual DOM, and every time at render, we generate the new virtual DOM from javascript and compare it with the old DOM. The elements that changed will be be re-rendered. Virtual elements are the objects returned by `createElement()` function at [framework.js](./src/framework/framework.js), and they are what constitude the virtual DOM in the framework, representing what the real DOM elements are expected to look like. Each actual DOM element like div, p, span will have a reference to the virtual element, and the virtual element will have a reference to the component that created it. The component will keep a reference to the real DOM element for state change and re-render.
@@ -19,9 +21,24 @@ While creating the new DOM element in `mountSimpleNode()`, we need to update all
 
 For `diffList()` function, it takes a list of virtual elements and its parent DOM node, iterates through the DOM elements we want to diff against and divide them into keyed and unkeyed elements. After the separation, we will iterate through the virtual elements. For keyed elements, if there is a DOM element with the same key, we will move it to the correct position(index of the virtual element) and do the diff as per usual. Otherwise if there is no DOM element with the same key, we will create a new DOM element. For virtual elements without a key, we will diff them against DOM elements at the same index as the unkeyed DOM elements array. If there is no DOM element with the same index, a new DOM element will be created.
 
+### State Management
+
+The framework is similar to Redux, and the source file is at `./src/framework/redux.js`, as these two functions are pretty similiar to redux, detailed explanation will be left out.
+
+Basically there are two functions, `createStore()` and `connect()`.
+* createStore(): creates a store from the reducer. It has three function attributes, `getState()` returns the current state; `dispatch()` receives an actions and call reducer to execute corresponding state change, each time `dispatch()` is called, all the subscribed handlers will be invoked; `subscribe()` subscribes a handler;
+
+* connect(): servers as a wrapper for component. Each component passed in will be passed with props from state in store, specified by `mapStateToProps` and `mapDispatchToProps`.
 
 
+### Routing
 
+For routing, source file `Route.js` at `./src/framework`; `Route` render some UI when current URL matches a location specified in the Route’s path prop. L
 
+The `Route` component is similar to React Router, hence only some differences will be explained here. Props for `Route` include `exact, path, enabled, render`. `exact` and `path` are same as props for Route in React Router, `enabled` indicates whether the route should be enabled or not. I add this for the purpose of authentication. `render` is a callback that will be executed and returned upon match. This `Route` also support parameter in path, with the usage of library `path-to-regexp`. The logic of `Route` is that first it will check for path match, if there is a match it will return whatever should be rendered as specified by the `render` props, but if not it will just return an empty div. However, to make the `Route` fully functional, it needs to be aware of current URL changes, like when user clicks on forward/back button. Hence, in the `componentWillMount/componentWillUnmount` function, event listener is added for state `popstate`, which will be fired whenever user clicks on forward/back button.
 
+## The Web App (at `./src/app`)
 
+The app can be destructed as following: 
+
+![diagram](BlackCat.png)

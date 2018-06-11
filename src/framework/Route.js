@@ -1,5 +1,4 @@
 import {Component, createElement} from './framework';
-import {register, unregister} from './routeInstance';
 import pathToRegexp from 'path-to-regexp';
 
 const matchPath = (pathname, options) => {
@@ -50,7 +49,6 @@ export class Route extends Component {
   componentWillMount() {
     console.log('route will mount: ' + this.props.path);
     addEventListener('popstate', this.handlePop);
-    register(this);
   }
 
   componentWillUnmount() {
@@ -63,7 +61,6 @@ export class Route extends Component {
       return;
     }
 
-    unregister(this);
     removeEventListener('popstate', this.handlePop);
   }
 

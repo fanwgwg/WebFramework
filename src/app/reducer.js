@@ -46,7 +46,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 inSearch: action.data,
             };
-        case Actions.SET_IN_DETAIL:
+        case Actions.SET_DETAIL:
             return {
                 ...state,
                 inDetail: action.data,

@@ -345,7 +345,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setInDetail: data => dispatch({type: Actions.SET_IN_DETAIL, data}),
+        setInDetail: data => dispatch({type: Actions.SET_DETAIL, data}),
     };
 };
 

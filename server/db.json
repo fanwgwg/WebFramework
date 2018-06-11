@@ -24,7 +24,8 @@
       ],
       "going": [
         2,
-        5
+        5,
+        0
       ]
     },
     {
@@ -295,7 +296,19 @@
           1.3017996
         ],
         "description": "Orchard Road"
-      }
+      },
+      "comments": [
+        {
+          "from": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "replyTo": null,
+          "content": "I'm the first one as well😂",
+          "time": "2018-06-11T11:00:01.856Z"
+        }
+      ]
     },
     {
       "id": 3,
@@ -313,7 +326,19 @@
           1.2563293
         ],
         "description": "Resorts World™ Theatre"
-      }
+      },
+      "comments": [
+        {
+          "from": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "replyTo": null,
+          "content": "yessss",
+          "time": "2018-06-11T11:00:12.834Z"
+        }
+      ]
     },
     {
       "id": 4,

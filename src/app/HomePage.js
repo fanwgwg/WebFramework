@@ -108,7 +108,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         setSearch: data => dispatch({type: Actions.SET_SEARCH, data}),
-        setDetail: data => dispatch({type: Actions.SET_IN_DETAIL, data}),
+        setDetail: data => dispatch({type: Actions.SET_DETAIL, data}),
     };
 };
 
