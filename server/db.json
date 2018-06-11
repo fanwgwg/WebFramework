@@ -221,6 +221,16 @@
           },
           "content": "I'm sophia!",
           "time": "2018-06-11T07:43:27.345Z"
+        },
+        {
+          "from": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "replyTo": null,
+          "content": "hahhahaha",
+          "time": "2018-06-11T11:22:22.564Z"
         }
       ]
     },

@@ -42,3 +42,13 @@ The `Route` component is similar to React Router, hence only some differences wi
 The app can be destructed as following: 
 
 ![diagram](BlackCat.png)
+
+* API for the website is at `./src/app/api.js`, and the api is a local one mocked by json-server, and the data source is at './server/db.json', where users are uniquely identified by id, as well as events. The authentication token is generated and verified with library `jsonwebtoken`. Acess token is stored in sessionStorage for persistency.
+
+* Some constants are defined at `./src/app/Constants.js`, like search tag filter and time filters.
+
+* Routes for the app are:
+   * /: Sign in page if user not logged in, home page otherwise
+   * /events/:id: Detail of event with a specific id
+   * /profile/:id: Profile page of a user with a specific id
+   * All other pages will fall into a 404 page that can be redirected back to home with one click

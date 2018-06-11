@@ -73,15 +73,15 @@ export const getTimeString = date => {
     };
 };
 
-function preventDefault(e) {
+const preventDefault = e => {
     e = e || window.event;
     if (e.preventDefault) {
         e.preventDefault();
     }
     e.returnValue = false;
-}
+};
 
-export function disableScroll() {
+export const disableScroll = () => {
     console.log('disable scroll');
     if (window.addEventListener) {
         window.addEventListener('DOMMouseScroll', preventDefault, false);
@@ -92,9 +92,9 @@ export function disableScroll() {
     document.ontouchmove = function(e) {
         e.preventDefault();
     };
-}
+};
 
-export function enableScroll() {
+export const enableScroll = () => {
     console.log('enable scroll');
     if (window.removeEventListener) {
         window.removeEventListener('DOMMouseScroll', preventDefault, false);
@@ -104,4 +104,4 @@ export function enableScroll() {
     document.ontouchmove = function(e) {
         return true;
     };
-}
+};

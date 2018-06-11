@@ -2,14 +2,7 @@ import * as Actions from './action';
 import {timeRanges} from './Constants';
 
 const initialState = {
-    currentUser: {
-        'id': 0,
-        'username': 'Henry',
-        'picture': 'http://localhost:3000/images/user-0.png',
-        'email': 'henry_1620@gmail.com',
-        'likes': [0, 1, 5],
-        'going': [1, 5],
-    },
+    currentUser: null,
     isAuthenticated: false,
     searchTimeFilter: timeRanges.ANYTIME,
     searchTagFilter: [0],

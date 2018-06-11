@@ -55,6 +55,11 @@ class HomePage extends Component {
 
     render() {
         console.log('render home page');
+
+        if (!(location.pathname == '/' || location.pathname.startsWith('/events/') || location.pathname.startsWith('/profile/'))) {
+            return <NotFoundPage />;
+        }
+
         const {time, fromTime, toTime, tagIds, currentUser} = this.props;
         const {inSearch, inDetail} = this.state;
 
@@ -87,7 +92,6 @@ class HomePage extends Component {
                     <Route key={3} exact path='/profile/:userid' enabled render={({match}) => (
                         <ProfileContainer userid={parseInt(match.params[0])} />
                     )} />
-                    {location.pathname == '/' || location.pathname.startsWith('/events/') || location.pathname.startsWith('/profile/') ? null : <NotFoundPage /> }
                 </div>
             </div>
         );
