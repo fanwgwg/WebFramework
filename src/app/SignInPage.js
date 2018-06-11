@@ -8,9 +8,8 @@ import * as API from './api';
 class SignInPage extends Component {
     onSignIn() {
         console.log('signing in');
-        history.pushState({}, null, '/events');
 
-        API.getUserById('Henry', data => {
+        API.getUserById(0, data => {
             this.props.onSignInSucceed(data);
         });
     }

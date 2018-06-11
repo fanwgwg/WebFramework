@@ -39,6 +39,16 @@ export const getEventById = (id, callback) => {
         });
 };
 
+export const getMultipleEvents = (ids, callback) => {
+    let requests = ids.map(id => fetch(`http://localhost:3000/events/${id}`)
+        .then(response => response.json())
+    );
+
+    Promise.all(requests).then(values => {
+        callback(values);
+    });
+};
+
 export const getEventResponses = (id, callback) => {
     let likes = [];
     let going = [];
@@ -122,5 +132,26 @@ export const likeEvent = (userId, eventId, like, callback) => {
         }).then(json => {
             callback();
         });
+    });
+};
+
+export const commentToEvent = (event, comment, callback) => {
+    if (event.comments) {
+        event.comments.push(comment);
+    } else {
+        event.comments = [comment];
+    }
+
+    fetch(`http://localhost:3000/events/${event.id}`, {
+        method: 'put',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(event),
+    }).then(response => {
+        return response.json();
+    }).then(json => {
+        callback();
     });
 };

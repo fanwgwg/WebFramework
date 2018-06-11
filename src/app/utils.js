@@ -1,3 +1,18 @@
+export const mergeArrayWithoutDuplicates = (array1, array2) => {
+    let arr = array1.concat(array2);
+    let len = arr.length;
+    let array3 = [];
+
+    while (len--) {
+        let itm = arr[len];
+        if (array3.indexOf(itm) === -1) {
+            array3.unshift(itm);
+        }
+    }
+
+    return array3;
+};
+
 export const getFormattedDate = date => (
     date.toISOString().substring(0, 10)
 );
@@ -58,21 +73,12 @@ export const getTimeString = date => {
     };
 };
 
-let keys = {37: 1, 38: 1, 39: 1, 40: 1};
-
 function preventDefault(e) {
     e = e || window.event;
     if (e.preventDefault) {
         e.preventDefault();
     }
     e.returnValue = false;
-}
-
-function preventDefaultForScrollKeys(e) {
-    if (keys[e.keyCode]) {
-        preventDefault(e);
-        return false;
-    }
 }
 
 export function disableScroll() {

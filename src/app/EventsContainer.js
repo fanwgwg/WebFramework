@@ -1,11 +1,12 @@
-import {Component, createElement} from '../framework';
+import {Component, createElement, connect} from '../framework';
 import EventCard from './EventCard';
+import NoResultContainer from './NoResultContainer';
 import {timeRanges, tags} from './Constants';
 import * as Utils from './utils';
-import * as activityIcon from './assets/activity.png';
 import * as API from './api';
+import * as Actions from './action';
 
-export default class EventsContainer extends Component {
+class EventsContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,6 +15,7 @@ export default class EventsContainer extends Component {
     }
 
     componentWillMount() {
+        console.log('mount events container');
         API.getAllEvents(data => {
             this.events = data;
             this.setState({
@@ -52,8 +54,11 @@ export default class EventsContainer extends Component {
             );
         }
 
+        console.log('render events container');
+
         const {time, fromTime, toTime, tagIds} = this.props;
         const filteredEvents = this.getFilteredEvents();
+        const isUnderSearch = fromTime || toTime || !tagIds.includes(0);
         let tagMessage;
         let timeMessage = time.description;
 
@@ -65,37 +70,34 @@ export default class EventsContainer extends Component {
             tagMessage = tagIds.map(t => <span class='tag'>{tags[t]}</span>);
         }
 
-        const searchPopup = fromTime || toTime || !tagIds.includes(0) ? (
-            <div class='search-popup' key={1}>
+        const searchPopup = isUnderSearch ? (
+            <div class='search-popup' key={0}>
                 <div class='result' key={0}>
                     {filteredEvents.length} Results
-                    <button onclick={this.props.onClearSearch.bind(this)}>Clear Filter</button>
+                    <button onclick={this.props.clearSearchFilter.bind(this)}>Clear Filter</button>
                 </div>
                 <div class='description' key={1}>
                     Filtered for {tagMessage} {timeMessage.toLowerCase()}
                 </div>
             </div>
-        ) : null;
+        ) : <div />;
 
-        const noResultMessage = filteredEvents.length == 0 ? (
-            <div class='message'>
-                <img src={activityIcon} />
-                No event found
-            </div>
-        ) : null;
+        const noResultMessage = filteredEvents.length == 0 ? <NoResultContainer key={1} /> : null;
 
         return (
-            <div class='events-container' key={1} style={searchPopup ? 'top: 130px' : 'top: 50px'}>
+            <div class='events-container' key={1} style={isUnderSearch ? 'top: 130px' : 'top: 50px'}>
                 {searchPopup}
                 {noResultMessage}
-                {filteredEvents.map((event, index) =>
-                    <EventCard
-                        currentUser={this.props.currentUser}
-                        event={event}
-                        onSelectEvent={() => this.props.onSelectEvent(event.id)}
-                        key={index}
-                    />)}
+                {filteredEvents.map((event, index) => <EventCard event={event} key={index + 2} />)}
             </div>
         );
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        clearSearchFilter: () => dispatch({type: Actions.CLEAR_FILTER}),
+    };
+};
+
+export default connect(null, mapDispatchToProps)(EventsContainer);

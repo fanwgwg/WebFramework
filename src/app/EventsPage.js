@@ -2,6 +2,7 @@ import {Component, createElement, connect, Route} from '../framework';
 import SearchBar from './SearchBar';
 import EventDetail from './EventDetailPage';
 import EventContainer from './EventsContainer';
+import ProfileContainer from './ProfileContainer';
 import * as searchIcon from './assets/search.png';
 import * as homeIcon from './assets/home.png';
 import * as Utils from './utils';
@@ -11,7 +12,7 @@ class EventsPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            inSearch: false,
+            inSearch: this.props.inSearch,
             inDetail: false,
         };
     }
@@ -19,14 +20,16 @@ class EventsPage extends Component {
     onMenuIconClicked() {
         const {inSearch, inDetail} = this.state;
 
-        if (inDetail) {
-            history.pushState({}, null, `/events`);
+        if (inDetail || this.props.inDetail) {
+            history.pushState({}, null, `/`);
+            this.props.setDetail(false),
             this.setState({
                 inDetail: false,
             });
             return;
         } else if (!inSearch) {
             Utils.disableScroll();
+            this.props.setSearch(true);
             this.setState({
                 inSearch: true,
             });
@@ -35,31 +38,22 @@ class EventsPage extends Component {
 
     onSearchStarted() {
         Utils.enableScroll();
+        this.props.setSearch(false);
         this.setState({
             inSearch: false,
         });
     }
 
-    onClearSearch() {
-        this.props.clearSearchFilter();
-    }
-
-    onSelectEvent(id) {
-        history.pushState({}, null, `/events/${id}`);
+    onUserClicked(id) {
+        history.pushState({}, null, `/profile/${id}`);
+        this.props.setDetail(true);
         this.setState({
             inDetail: true,
         });
     }
 
-    onEnterDetail() {
-        if (!this.state.inDetail) {
-            this.setState({
-                inDetail: true,
-            });
-        }
-    }
-
     render() {
+        console.log('render events page');
         const {time, fromTime, toTime, tagIds, currentUser} = this.props;
         const {inSearch, inDetail} = this.state;
 
@@ -71,32 +65,27 @@ class EventsPage extends Component {
                 <div class='main' key={1} style={inSearch ? 'opacity: 0.5; background: #b7b7b7' : 'null'}>
                     <div class='top-menu' key={0}>
                         <img
-                            src={inDetail ? homeIcon : searchIcon}
+                            src={this.props.inDetail ? homeIcon : searchIcon}
                             alt={inDetail ? 'Home' : 'Search'}
                             style='width: 24px'
                             onclick={this.onMenuIconClicked.bind(this)}
                         />
                         <span>BlackCat</span>
-                        <img src={currentUser.picture} alt='Profile' />
+                        <img src={currentUser.picture} alt='Profile' onclick={() => this.onUserClicked(currentUser.id)} />
                     </div>
-                    <Route key={2} exact path='/events' enabled render={() => (
+                    <Route key={1} exact path='/' enabled render={() => (
                         <EventContainer
-                            currentUser={this.props.currentUser}
                             time={time}
                             fromTime={fromTime}
                             toTime={toTime}
                             tagIds={tagIds}
-                            onClearSearch={this.onClearSearch.bind(this)}
-                            onSelectEvent={this.onSelectEvent.bind(this)}
                         />
                     )} />
-                    <Route key={3} exact path='/events/:id' enabled render={({match}) => (
-                        <EventDetail
-                            currentUser={this.props.currentUser}
-                            eventId={parseInt(match.params[0])}
-                            style='top: 50px'
-                            onEnterDetail={this.onEnterDetail.bind(this)}
-                        />
+                    <Route key={2} exact path='/events/:id' enabled render={({match}) => (
+                        <EventDetail eventId={parseInt(match.params[0])} />
+                    )} />
+                    <Route key={3} exact path='/profile/:userid' enabled render={({match}) => (
+                        <ProfileContainer userid={parseInt(match.params[0])} />
                     )} />
                 </div>
             </div>
@@ -111,12 +100,14 @@ const mapStateToProps = state => {
         fromTime: state.searchTimeFilter ? state.searchTimeFilter.fromTime : null,
         toTime: state.searchTimeFilter ? state.searchTimeFilter.toTime : null,
         tagIds: state.searchTagFilter ? state.searchTagFilter : [0],
+        inDetail: state.inDetail,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        clearSearchFilter: () => dispatch({type: Actions.CLEAR_FILTER}),
+        setSearch: data => dispatch({type: Actions.SET_SEARCH, data}),
+        setDetail: data => dispatch({type: Actions.SET_IN_DETAIL, data}),
     };
 };
 

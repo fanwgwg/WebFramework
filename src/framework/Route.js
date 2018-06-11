@@ -76,6 +76,7 @@ export class Route extends Component {
     console.log('current pathname ' + location.pathname);
     const {path, exact, render, enabled} = this.props;
     const match = matchPath(location.pathname, {path, exact});
+    console.log(match);
 
     if (!enabled || !match) {
       return <div class="route" />;

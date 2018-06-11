@@ -7,8 +7,9 @@ import * as heartShapeIcon from './assets/heart-purple.png';
 import {tags} from './Constants';
 import * as Utils from './utils';
 import * as API from './api';
+import * as Actions from './action';
 
-export default class EventCard extends Component {
+class EventCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -34,48 +35,74 @@ export default class EventCard extends Component {
     }
 
     onEventCardClicked(id) {
-        this.props.onSelectEvent(id);
+        if (this.props.inSearch) {
+            return;
+        }
+
+        history.pushState({}, null, `/events/${id}`);
+
+        // this.props.selectEvent();
+        this.props.setInDetail(true);
     }
 
     onGoingClicked(e) {
+        console.log(this.props.inSearch);
+        if (this.props.inSearch) {
+            return;
+        }
+
         e.stopPropagation();
 
-        const {user} = this.state;
-        const {event} = this.props;
+        const {user, responses} = this.state;
+        const {event, currentUser} = this.props;
 
         if (!user) {
             return;
         }
 
-        const isGoing = !user.going.includes(event.id);
-        API.goForEvent(user.id, event.id, isGoing, () => {
+        const isGoing = !responses.going.map(r => r.userid).includes(this.props.currentUser.id);
+        API.goForEvent(currentUser.id, event.id, isGoing, () => {
             this.fetchData();
         });
     }
 
     onLikeClicked(e) {
+        if (this.props.inSearch) {
+            return;
+        }
+
         e.stopPropagation();
 
-        const {user} = this.state;
-        const {event} = this.props;
+        const {user, responses} = this.state;
+        const {event, currentUser} = this.props;
 
         if (!user) {
             return;
         }
 
-        const like = !user.likes.includes(event.id);
-        API.likeEvent(user.id, event.id, like, () => {
+        const like = !responses.likes.map(r => r.userid).includes(this.props.currentUser.id);
+        API.likeEvent(currentUser.id, event.id, like, () => {
             this.fetchData();
         });
     }
 
+    onUserClicked(e) {
+        e.stopPropagation();
+        history.pushState({}, null, `/profile/${this.props.event.userid}`);
+        this.props.setInDetail(true);
+    }
+
     render() {
+        if (this.state.responses.length == 0) {
+            return <div />;
+        }
+
         const {title, tagId, content, image, id} = this.props.event;
         const {user, responses} = this.state;
         const startTime = new Date(this.props.event.startTime);
         const endTime = new Date(this.props.event.endTime);
-        const isGoing = this.props.currentUser.going.includes(id);
-        const likes = this.props.currentUser.likes.includes(id);
+        const isGoing = responses.going.map(r => r.userid).includes(this.props.currentUser.id);
+        const likes = responses.likes.map(r => r.userid).includes(this.props.currentUser.id);
 
         const interactionArea = (user && responses) ? (
             <div class='bottom'>
@@ -94,7 +121,7 @@ export default class EventCard extends Component {
             <div class='event-card' onclick={e => this.onEventCardClicked(id)}>
                 <div class='top'>
                     <div class='user'>
-                        <img src={user ? user.picture : undefined} />
+                        <img src={user ? user.picture : undefined} onclick={e => this.onUserClicked(e)}/>
                         {user ? user.username : ''}
                     </div>
                     <div class='tag noselect'>{tags[tagId]}</div>
@@ -116,3 +143,19 @@ export default class EventCard extends Component {
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        currentUser: state.currentUser,
+        inSearch: state.inSearch,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setInDetail: data => dispatch({type: Actions.SET_IN_DETAIL, data}),
+        selectEvent: () => dispatch({type: Actions.SELECT_EVENT}),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EventCard);

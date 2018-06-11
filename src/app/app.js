@@ -7,7 +7,17 @@ import EventsPage from './EventsPage';
 const store = createStore(reducer);
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = this.props.store.getState();
+    }
+
     componentWillMount() {
+        if (Object.keys(this.state).length == 0) {
+            this.props.store.init();
+            return;
+        }
+
         this.unsubscribe = this.props.store.subscribe(() => {
             let newState = this.props.store.getState();
             console.log(newState);
@@ -20,8 +30,7 @@ class App extends Component {
     }
 
     render() {
-        console.log(`render App with state ${this.state.isAuthenticated}`);
-        console.log(this.props.store === this.state.isAuthenticated);
+        console.log(this.state);
         if (this.props.store == undefined) {
             return (
                 <div class='app'>
@@ -32,9 +41,9 @@ class App extends Component {
 
         return (
             <div class='app'>
-                <Route key={0} exact path='/' enabled render={() => <SignInPage />} />
-                {/* <Route key={1} exact path='/events' enabled={this.state.isAuthenticated} render={() => <EventsPage />} /> */}
-                <Route key={1} path='/events' enabled render={({match}) => <EventsPage match={match}/>} />
+                <Route key={0} exact path='/'enabled={!this.state.isAuthenticated} render={() => <SignInPage />} />
+                {/* <Route key={1} exact path='/events'  render={() => <EventsPage />} /> */}
+                <Route key={1} path='/' enabled={this.state.isAuthenticated} render={({match}) => <EventsPage match={match}/>} />
             </div>
         );
     }

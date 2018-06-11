@@ -10,14 +10,18 @@ const initialState = {
         'likes': [0, 1, 5],
         'going': [1, 5],
     },
-    isAuthenticated: false,
+    isAuthenticated: true,
     searchTimeFilter: timeRanges.ANYTIME,
     searchTagFilter: [0],
+    inSearch: false,
+    inDetail: false,
 };
 
 const reducer = (state = initialState, action) => {
     console.log(`actions: ${action.type}`);
     switch (action.type) {
+        case Actions.UPDATE_ROUTE:
+            return state;
         case Actions.SIGN_IN_SUCCEED:
             return {
                 ...state,
@@ -35,6 +39,16 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 searchTimeFilter: timeRanges.ANYTIME,
                 searchTagFilter: [0],
+            };
+        case Actions.SET_SEARCH:
+            return {
+                ...state,
+                inSearch: action.data,
+            };
+        case Actions.SET_IN_DETAIL:
+            return {
+                ...state,
+                inDetail: action.data,
             };
         case Actions.SELECT_EVENT:
             return state;

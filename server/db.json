@@ -6,13 +6,10 @@
       "picture": "http://localhost:3000/images/user-0.png",
       "email": "henry_1620@gmail.com",
       "likes": [
-        0,
-        1,
-        5
+        2
       ],
       "going": [
-        1,
-        5
+        2
       ]
     },
     {
@@ -77,7 +74,8 @@
       ],
       "going": [
         3,
-        5
+        5,
+        4
       ]
     },
     {
@@ -115,7 +113,71 @@
           1.2928531
         ],
         "description": "Singapore Philatelic Museum"
-      }
+      },
+      "comments": [
+        {
+          "from": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "replyTo": null,
+          "content": "first one to comment",
+          "time": "2018-06-08T14:38:50.531Z"
+        },
+        {
+          "from": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "replyTo": null,
+          "content": "kjkj",
+          "time": "2018-06-08T15:11:17.444Z"
+        },
+        {
+          "from": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "replyTo": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "content": "oij",
+          "time": "2018-06-08T15:11:42.659Z"
+        },
+        {
+          "from": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "replyTo": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "content": "kj",
+          "time": "2018-06-08T15:53:11.641Z"
+        },
+        {
+          "from": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "replyTo": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "content": "hhh",
+          "time": "2018-06-10T17:15:43.529Z"
+        }
+      ]
     },
     {
       "id": 1,
@@ -133,7 +195,43 @@
           1.2540421
         ],
         "description": "Universal Studios Singapore"
-      }
+      },
+      "comments": [
+        {
+          "from": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "replyTo": null,
+          "content": "xixi",
+          "time": "2018-06-08T14:39:01.351Z"
+        },
+        {
+          "from": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "replyTo": null,
+          "content": "hahahha",
+          "time": "2018-06-10T16:27:22.426Z"
+        },
+        {
+          "from": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "replyTo": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "content": "reply to myself?",
+          "time": "2018-06-10T16:27:29.722Z"
+        }
+      ]
     },
     {
       "id": 2,
@@ -194,7 +292,33 @@
           1.2897934
         ],
         "description": "Esplanade Theatre Studio"
-      }
+      },
+      "comments": [
+        {
+          "from": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "replyTo": null,
+          "content": "nice try!",
+          "time": "2018-06-08T14:39:10.528Z"
+        },
+        {
+          "from": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "replyTo": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "content": "oh yah",
+          "time": "2018-06-08T15:57:00.595Z"
+        }
+      ]
     },
     {
       "id": 5,
@@ -248,6 +372,44 @@
           "replyTo": null,
           "content": "It looks like a nice show!",
           "time": "2018-06-08T17:30:20"
+        },
+        {
+          "from": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "replyTo": null,
+          "content": "I love it too",
+          "time": "2018-06-08T14:34:09.097Z"
+        },
+        {
+          "from": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "replyTo": {
+            "userid": 1,
+            "username": "Sophia",
+            "picture": "http://localhost:3000/images/user-1.jpeg"
+          },
+          "content": "haha guess what",
+          "time": "2018-06-08T14:37:30.105Z"
+        },
+        {
+          "from": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "replyTo": {
+            "userid": 2,
+            "username": "William",
+            "picture": "http://localhost:3000/images/user-2.jpeg"
+          },
+          "content": "who are you?",
+          "time": "2018-06-08T14:39:25.566Z"
         }
       ]
     }

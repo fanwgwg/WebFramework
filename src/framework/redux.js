@@ -42,8 +42,8 @@ export const createStore = reducer => {
 export const connect = (mapStateToProps, mapDispatchToProps) => {
     return WrappedComponent => {
         return class extends Component {
-            constructor() {
-                super();
+            constructor(props) {
+                super(props);
                 this.state = {storeState: globalStore.getState()};
             }
 
@@ -70,8 +70,6 @@ export const connect = (mapStateToProps, mapDispatchToProps) => {
                 if (mapDispatchToProps) {
                     dispatchProps = mapDispatchToProps(globalStore.dispatch, this.props);
                 }
-
-                console.log(this.props);
 
                 return (
                     <WrappedComponent
