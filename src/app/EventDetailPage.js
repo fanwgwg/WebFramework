@@ -66,10 +66,10 @@ class EventDetail extends Component {
     }
 
     fetchData() {
-        API.getEventById(this.props.eventId, eventData => {
+        API.getEventById(this.props.token, this.props.eventId, eventData => {
             this.event = eventData.event;
             this.responses = eventData.responses;
-            API.getUserById(eventData.event.userid, userInfo => {
+            API.getUserById(this.props.token, eventData.event.userid, userInfo => {
                 this.user = userInfo;
                 this.setState({
                     isLoading: false,
@@ -84,7 +84,7 @@ class EventDetail extends Component {
         }
 
         const isGoing = !this.responses.going.map(r => r.userid).includes(this.props.currentUser.id);
-        API.goForEvent(this.props.currentUser.id, this.event.id, isGoing, () => {
+        API.goForEvent(this.props.token, this.props.currentUser.id, this.event.id, isGoing, () => {
             this.fetchData();
         });
     }
@@ -95,7 +95,7 @@ class EventDetail extends Component {
         }
 
         const like = !this.responses.likes.map(r => r.userid).includes(this.props.currentUser.id);
-        API.likeEvent(this.props.currentUser.id, this.event.id, like, () => {
+        API.likeEvent(this.props.token, this.props.currentUser.id, this.event.id, like, () => {
             this.fetchData();
         });
     }
@@ -127,7 +127,7 @@ class EventDetail extends Component {
         }
 
         let comment = this.formComment(text.trim());
-        API.commentToEvent(this.event, comment, () => {
+        API.commentToEvent(this.props.token, this.event, comment, () => {
             this.setState({
                 isCommenting: false,
                 replyingTo: null,
@@ -337,6 +337,7 @@ class EventDetail extends Component {
 
 const mapStateToProps = state => {
     return {
+        token: state.token,
         currentUser: state.currentUser,
         inDetail: state.inDetail,
     };

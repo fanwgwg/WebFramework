@@ -39,9 +39,9 @@ class ProfileContainer extends Component {
     }
 
     fetchData(userid) {
-        API.getUserById(userid, data => {
+        API.getUserById(this.props.token, userid, data => {
             let ids = Utils.mergeArrayWithoutDuplicates(data.going, data.likes);
-            API.getMultipleEvents(ids, events => {
+            API.getMultipleEvents(this.props.token, ids, events => {
                 this.setState({
                     user: data,
                     relevantEvents: events,
@@ -120,6 +120,7 @@ class ProfileContainer extends Component {
 
 const mapStateToProps = state => {
     return {
+        token: state.token,
         currentUser: state.currentUser,
         inDetail: state.inDetail,
     };

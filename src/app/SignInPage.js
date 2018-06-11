@@ -9,8 +9,23 @@ class SignInPage extends Component {
     onSignIn() {
         console.log('signing in');
 
-        API.getUserById(0, data => {
-            this.props.onSignInSucceed(data);
+        let email = this.emailInput.value.trim();
+        let password = this.passwordInput.value;
+
+        console.log(`email: ${email}`);
+        console.log(`password: ${password}`);
+
+        API.authenticate(email, password, data => {
+            console.log(data);
+            if (data.status == 200) {
+                console.log('sign in succeed');
+                this.props.onSignInSucceed({
+                    token: data.accessToken,
+                    user: data.user,
+                });
+            } else {
+                console.log('sign in fails');
+            }
         });
     }
 
@@ -25,11 +40,11 @@ class SignInPage extends Component {
                 <div class='sign-in-middle'>
                     <div class='input-container'>
                         <img src={userIcon} />
-                        <input type='text' placeholder='Email' />
+                        <input type='text' placeholder='Email' ref={input => this.emailInput = input} />
                     </div>
                     <div class='input-container'>
                         <img src={passwordIcon} />
-                        <input type='password' placeholder='Password' />
+                        <input type='password' placeholder='Password' ref={input => this.passwordInput = input} />
                     </div>
                 </div>
                 <button class='sign-in-button' onclick={this.onSignIn.bind(this)}>SIGN IN</button>

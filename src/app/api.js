@@ -1,47 +1,79 @@
-export const getAllUsers = (callback) => {
-    fetch(`http://localhost:3000/users`)
-        .then(response => {
-            return response.json();
-        }).then(json => {
-            callback(json);
-        });
+export const authenticate = (email, password, callback) => {
+    const info = {email, password};
+    fetch(`http://localhost:3000/auth`, {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(info),
+    }).then(response => {
+        return response.json();
+    }).then(json => {
+        callback(json);
+    });
 };
 
-export const getUserById = (id, callback) => {
-    fetch(`http://localhost:3000/users/${id}`)
-        .then(response => {
-            return response.json();
-        }).then(json => {
-            callback(json);
-        });
+export const getAllUsers = (token, callback) => {
+    fetch(`http://localhost:3000/users`, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    }).then(response => {
+        return response.json();
+    }).then(json => {
+        callback(json);
+    });
 };
 
-export const getAllEvents = (callback) => {
-    fetch('http://localhost:3000/events')
-        .then(response => {
-            return response.json();
-        }).then(json => {
-            callback(json);
-        });
+export const getUserById = (token, id, callback) => {
+    fetch(`http://localhost:3000/users/${id}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    }).then(response => {
+        return response.json();
+    }).then(json => {
+        callback(json);
+    });
 };
 
-export const getEventById = (id, callback) => {
-    fetch(`http://localhost:3000/events/${id}`)
-        .then(response => {
-            return response.json();
-        }).then(json => {
-            getEventResponses(id, responses => {
-                callback({
-                    event: json,
-                    responses,
-                });
+export const getAllEvents = (token, callback) => {
+    fetch('http://localhost:3000/events', {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    }).then(response => {
+        return response.json();
+    }).then(json => {
+        callback(json);
+    });
+};
+
+export const getEventById = (token, id, callback) => {
+    fetch(`http://localhost:3000/events/${id}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    }).then(response => {
+        return response.json();
+    }).then(json => {
+        getEventResponses(token, id, responses => {
+            callback({
+                event: json,
+                responses,
             });
         });
+    });
 };
 
-export const getMultipleEvents = (ids, callback) => {
-    let requests = ids.map(id => fetch(`http://localhost:3000/events/${id}`)
-        .then(response => response.json())
+export const getMultipleEvents = (token, ids, callback) => {
+    let requests = ids.map(id =>
+        fetch(`http://localhost:3000/events/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        }).then(response => response.json())
     );
 
     Promise.all(requests).then(values => {
@@ -49,11 +81,11 @@ export const getMultipleEvents = (ids, callback) => {
     });
 };
 
-export const getEventResponses = (id, callback) => {
+export const getEventResponses = (token, id, callback) => {
     let likes = [];
     let going = [];
 
-    getAllUsers(users => {
+    getAllUsers(token, users => {
         users.forEach(user => {
             if (user.likes.includes(id)) {
                 likes.push({
@@ -76,8 +108,8 @@ export const getEventResponses = (id, callback) => {
     });
 };
 
-export const goForEvent = (userId, eventId, isGoing, callback) => {
-    getUserById(userId, user => {
+export const goForEvent = (token, userId, eventId, isGoing, callback) => {
+    getUserById(token, userId, user => {
         let going = user.going;
 
         if (isGoing) {
@@ -96,6 +128,7 @@ export const goForEvent = (userId, eventId, isGoing, callback) => {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify(user),
         }).then(response => {
@@ -106,8 +139,8 @@ export const goForEvent = (userId, eventId, isGoing, callback) => {
     });
 };
 
-export const likeEvent = (userId, eventId, like, callback) => {
-    getUserById(userId, user => {
+export const likeEvent = (token, userId, eventId, like, callback) => {
+    getUserById(token, userId, user => {
         let likes = user.likes;
 
         if (like) {
@@ -125,6 +158,7 @@ export const likeEvent = (userId, eventId, like, callback) => {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify(user),
         }).then(response => {
@@ -135,7 +169,7 @@ export const likeEvent = (userId, eventId, like, callback) => {
     });
 };
 
-export const commentToEvent = (event, comment, callback) => {
+export const commentToEvent = (token, event, comment, callback) => {
     if (event.comments) {
         event.comments.push(comment);
     } else {
@@ -147,6 +181,7 @@ export const commentToEvent = (event, comment, callback) => {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(event),
     }).then(response => {

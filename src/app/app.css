@@ -679,15 +679,18 @@ input:focus {
 
 .event-detail .comment-block .content {
     width: 100%;
-    color: #67616D;
-    font-size: 14px;
 }
 
 .event-detail .comment-block .content .top {
     color: #AC8EC9;
 }
 
-.event-detail .comment-block .top span {
+.event-detail .comment-block .top .title {
+    color: #67616D;
+    font-size: 14px;
+}  
+
+.event-detail .comment-block .top .time {
     color: #BABABA;
     font-size: 12px;
     margin-left: 10px;

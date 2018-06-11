@@ -1,10 +1,16 @@
-import {Component, createElement} from '../framework';
+import {Component, createElement, connect} from '../framework';
 import * as Utils from './utils';
 import * as replyIcon from './assets/reply.png';
+import * as Actions from './action';
 
-export default class Comments extends Component {
-    onRelyCommentClicked(username) {
+class Comments extends Component {
+    onReplyCommentClicked(username) {
         this.props.onReplyCommentClicked(username);
+    }
+
+    onUserClicked(id) {
+        history.pushState({}, null, `/profile/${id}`);
+        this.props.setInDetail(true);
     }
 
     render() {
@@ -12,19 +18,26 @@ export default class Comments extends Component {
 
 
         const commentElements = comments.map(comment => {
-            let title = comment.from.username;
+            let replyUserName = null;
             if (comment.replyTo) {
-                title += ` @ ${comment.replyTo.username}`;
+                replyUserName = (
+                    <span
+                        class='title'
+                        onclick={() => this.onUserClicked(comment.replyTo.userid)}
+                    > @ {comment.replyTo.username}
+                    </span>
+                );
             }
 
             return (
                 <div class='comment-block'>
-                    <img class='user-icon' src={comment.from.picture} />
+                    <img class='user-icon' src={comment.from.picture} onclick={() => this.onUserClicked(comment.from.userid)}/>
                     <div class='content'>
                         <div class='top'>
-                            {title}
-                            <span>{Utils.getDateString(new Date(comment.time))}</span>
-                            <button onclick={e => this.onRelyCommentClicked(comment.from)}>
+                            <span class='title' onclick={() => this.onUserClicked(comment.from.userid)}>{comment.from.username}</span>
+                            {replyUserName}
+                            <span class='time'>{Utils.getDateString(new Date(comment.time))}</span>
+                            <button onclick={e => this.onReplyCommentClicked(comment.from)}>
                                 <img src={replyIcon} alt='reply' />
                             </button>
                         </div>
@@ -41,3 +54,18 @@ export default class Comments extends Component {
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        currentUser: state.currentUser,
+        token: state.token,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setInDetail: data => dispatch({type: Actions.SET_IN_DETAIL, data}),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Comments);

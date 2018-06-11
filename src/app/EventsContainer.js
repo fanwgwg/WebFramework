@@ -16,7 +16,7 @@ class EventsContainer extends Component {
 
     componentWillMount() {
         console.log('mount events container');
-        API.getAllEvents(data => {
+        API.getAllEvents(this.props.token, data => {
             this.events = data;
             this.setState({
                 isLoading: false,
@@ -94,10 +94,16 @@ class EventsContainer extends Component {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        token: state.token,
+    };
+};
+
 const mapDispatchToProps = dispatch => {
     return {
         clearSearchFilter: () => dispatch({type: Actions.CLEAR_FILTER}),
     };
 };
 
-export default connect(null, mapDispatchToProps)(EventsContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(EventsContainer);

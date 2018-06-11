@@ -10,7 +10,7 @@ const initialState = {
         'likes': [0, 1, 5],
         'going': [1, 5],
     },
-    isAuthenticated: true,
+    isAuthenticated: false,
     searchTimeFilter: timeRanges.ANYTIME,
     searchTagFilter: [0],
     inSearch: false,
@@ -26,7 +26,8 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 isAuthenticated: true,
-                currentUser: action.data,
+                currentUser: action.data.user,
+                token: action.data.token,
             };
         case Actions.UPDATE_SEARCH_FILTER:
             return {

@@ -4,12 +4,13 @@
       "id": 0,
       "username": "Henry",
       "picture": "http://localhost:3000/images/user-0.png",
-      "email": "henry_1620@gmail.com",
+      "email": "henry@gmail.com",
+      "password": "123456",
       "likes": [
-        2
+        0
       ],
       "going": [
-        2
+        0
       ]
     },
     {
@@ -17,6 +18,7 @@
       "username": "Sophia",
       "picture": "http://localhost:3000/images/user-1.jpeg",
       "email": "sophia_c121@hotmail.com",
+      "password": "123456",
       "likes": [
         4,
         5
@@ -31,6 +33,7 @@
       "username": "William",
       "picture": "http://localhost:3000/images/user-2.jpeg",
       "email": "william16@hotmail.com",
+      "password": "123456",
       "likes": [],
       "going": [
         0
@@ -41,6 +44,7 @@
       "username": "Jacob",
       "picture": "http://localhost:3000/images/user-3.jpeg",
       "email": "jacob123@gmail.com",
+      "password": "123456",
       "likes": [
         3,
         5
@@ -55,6 +59,7 @@
       "username": "Isabella",
       "picture": "http://localhost:3000/images/user-4.jpeg",
       "email": "isabella@gmail.com",
+      "password": "123456",
       "likes": [
         3
       ],
@@ -68,6 +73,7 @@
       "username": "Alexander",
       "picture": "http://localhost:3000/images/user-5.jpeg",
       "email": "Alexander@gmail.com",
+      "password": "123456",
       "likes": [
         1,
         5
@@ -83,6 +89,7 @@
       "username": "Olivia",
       "picture": "http://localhost:3000/images/user-6.jpeg",
       "email": "Olivia@hotmail.com",
+      "password": "123456",
       "likes": [
         2,
         4
@@ -176,6 +183,30 @@
           },
           "content": "hhh",
           "time": "2018-06-10T17:15:43.529Z"
+        },
+        {
+          "from": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "replyTo": null,
+          "content": "hello guys",
+          "time": "2018-06-11T03:45:40.845Z"
+        },
+        {
+          "from": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "replyTo": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "content": "heihei",
+          "time": "2018-06-11T03:46:01.453Z"
         }
       ]
     },

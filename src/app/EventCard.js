@@ -24,8 +24,8 @@ class EventCard extends Component {
     }
 
     fetchData() {
-        API.getUserById(this.props.event.userid, data => {
-            API.getEventResponses(this.props.event.id, responses => {
+        API.getUserById(this.props.token, this.props.event.userid, data => {
+            API.getEventResponses(this.props.token, this.props.event.id, responses => {
                 this.setState({
                     user: data,
                     responses: responses,
@@ -40,8 +40,6 @@ class EventCard extends Component {
         }
 
         history.pushState({}, null, `/events/${id}`);
-
-        // this.props.selectEvent();
         this.props.setInDetail(true);
     }
 
@@ -61,7 +59,7 @@ class EventCard extends Component {
         }
 
         const isGoing = !responses.going.map(r => r.userid).includes(this.props.currentUser.id);
-        API.goForEvent(currentUser.id, event.id, isGoing, () => {
+        API.goForEvent(this.props.token, currentUser.id, event.id, isGoing, () => {
             this.fetchData();
         });
     }
@@ -81,7 +79,7 @@ class EventCard extends Component {
         }
 
         const like = !responses.likes.map(r => r.userid).includes(this.props.currentUser.id);
-        API.likeEvent(currentUser.id, event.id, like, () => {
+        API.likeEvent(this.props.token, currentUser.id, event.id, like, () => {
             this.fetchData();
         });
     }
@@ -148,6 +146,7 @@ const mapStateToProps = state => {
     return {
         currentUser: state.currentUser,
         inSearch: state.inSearch,
+        token: state.token,
     };
 };
 
