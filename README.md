@@ -49,6 +49,6 @@ The app can be destructed as following:
 
 * Routes for the app are:
    * /: Sign in page if user not logged in, home page otherwise
-   * /events/:id: Detail of event with a specific id
-   * /profile/:id: Profile page of a user with a specific id
+   * /events/id: Detail of event with a specific id
+   * /profile/id: Profile page of a user with a specific id
    * All other pages will fall into a 404 page that can be redirected back to home with one click
