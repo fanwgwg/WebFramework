@@ -185,6 +185,10 @@ input:focus {
     width: 30px;
 }
 
+.home-page .top-menu .user {
+    border-radius: 50%;
+}
+
 .home-page .search-popup {
     padding: 10px 16px;
     height: 60px;

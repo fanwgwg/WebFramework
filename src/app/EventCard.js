@@ -21,6 +21,12 @@ class EventCard extends Component {
 
     componentWillMount() {
         this.fetchData();
+        console.log('update event card');
+    }
+
+    componentWillUpdate() {
+        console.log('component update');
+        console.log(this.state.responses);
     }
 
     fetchData() {
@@ -83,6 +89,7 @@ class EventCard extends Component {
 
         const like = !responses.likes.map(r => r.userid).includes(this.props.currentUser.id);
         API.likeEvent(this.props.token, currentUser.id, event.id, like, () => {
+            console.log(`like ${like} for event ${event.title}`);
             this.fetchData();
 
             if (this.props.onEventCardUpdate) {
@@ -108,6 +115,9 @@ class EventCard extends Component {
         const endTime = new Date(this.props.event.endTime);
         const isGoing = responses.going.map(r => r.userid).includes(this.props.currentUser.id);
         const likes = responses.likes.map(r => r.userid).includes(this.props.currentUser.id);
+
+        console.log(responses);
+        console.log(`likes for ${title}: ${likes}`);
 
         const interactionArea = (user && responses) ? (
             <div class='bottom'>

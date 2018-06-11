@@ -65,14 +65,13 @@ class HomePage extends Component {
                 </div>
                 <div class='main' key={1} style={inSearch ? 'opacity: 0.5; background: #b7b7b7' : 'null'}>
                     <div class='top-menu' key={0}>
-                        <img
-                            src={this.props.inDetail ? homeIcon : searchIcon}
+                        <img src={this.props.inDetail ? homeIcon : searchIcon}
                             alt={inDetail ? 'Home' : 'Search'}
                             style='width: 24px'
                             onclick={this.onMenuIconClicked.bind(this)}
                         />
                         <span>BlackCat</span>
-                        <img src={currentUser.picture} alt='Profile' onclick={() => this.onUserClicked(currentUser.id)} />
+                        <img class='user' src={currentUser.picture} alt='Profile' onclick={() => this.onUserClicked(currentUser.id)} />
                     </div>
                     <Route key={1} exact path='/' enabled render={() => (
                         <EventContainer

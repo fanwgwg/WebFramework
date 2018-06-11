@@ -20,8 +20,7 @@
       "email": "sophia_c121@hotmail.com",
       "password": "123456",
       "likes": [
-        4,
-        5
+        0
       ],
       "going": [
         2,
@@ -207,6 +206,20 @@
           },
           "content": "heihei",
           "time": "2018-06-11T03:46:01.453Z"
+        },
+        {
+          "from": {
+            "userid": 1,
+            "username": "Sophia",
+            "picture": "http://localhost:3000/images/user-1.jpeg"
+          },
+          "replyTo": {
+            "userid": 0,
+            "username": "Henry",
+            "picture": "http://localhost:3000/images/user-0.png"
+          },
+          "content": "I'm sophia!",
+          "time": "2018-06-11T07:43:27.345Z"
         }
       ]
     },

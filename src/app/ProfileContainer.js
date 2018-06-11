@@ -64,7 +64,6 @@ class ProfileContainer extends Component {
 
     render() {
         const {user, activeTab} = this.state;
-        const {currentUser} = this.props;
 
         if (!user) {
             return <div />;
@@ -77,7 +76,6 @@ class ProfileContainer extends Component {
         const events = [likeEvents, goingEvents, pastEvents];
         const eventCards = events[activeTab].map((event, index) => <EventCard
             key={index + 4}
-            currentUser={currentUser}
             event={event}
             onEventCardUpdate={this.onEventCardUpate.bind(this)}
         />);

@@ -29,6 +29,10 @@ class Comments extends Component {
                 );
             }
 
+            const date = new Date(comment.time);
+            const time = Utils.getTimeString(date);
+            const day = Utils.getFormattedDate(date);
+
             return (
                 <div class='comment-block'>
                     <img class='user-icon' src={comment.from.picture} onclick={() => this.onUserClicked(comment.from.userid)}/>
@@ -36,7 +40,7 @@ class Comments extends Component {
                         <div class='top'>
                             <span class='title' onclick={() => this.onUserClicked(comment.from.userid)}>{comment.from.username}</span>
                             {replyUserName}
-                            <span class='time'>{Utils.getDateString(new Date(comment.time))}</span>
+                            <span class='time'>{time.time} {time.period} {day}</span>
                             <button onclick={e => this.onReplyCommentClicked(comment.from)}>
                                 <img src={replyIcon} alt='reply' />
                             </button>

@@ -11,7 +11,7 @@ server.use(jsonServer.bodyParser);
 server.use(jsonServer.defaults());
 
 const SECRET_KEY = '123456789';
-const expiresIn = '1h';
+const expiresIn = '3h';
 
 const createToken = payload => jwt.sign(payload, SECRET_KEY, {expiresIn});
 const verifyToken = token => jwt.verify(token, SECRET_KEY, (err, decode) => (
